@@ -1,8 +1,9 @@
-import { useState } from "react"
+import { useState,useRef,useEffect } from "react"
 import { Card,Box,IconButton, InputAdornment, Typography,TextField, Button,Grid, Checkbox } from "@mui/material"
 import { style } from "@mui/system"
 import { Lock, Person, Visibility, VisibilityOff } from "@mui/icons-material"
 import HeroSection from "../components/HeroSection"
+import { SubmitHandler, useForm } from 'react-hook-form';
 import styles from '../styles/Home.module.css'
 import Navbar from "../components/Navbar"
 import Logo from '../images/ANNI-Logo1 1.png'
@@ -10,11 +11,60 @@ import Image from "next/image"
 import Footer from "../components/Footer"
 import GreenButton from "../components/Buttonn"
 import { useRouter } from "next/router"
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import SubmitButton from "../components/MarkoBtn"
+import {useAppDispatch,useAppSelector} from "../redux/hooks";
+import {selectSignIn} from "../redux/auth/signin/signinSlice"
+import {signinApi} from "../redux/auth/signin/signinApi"
+import useToast from "../hooks/useToast"
+interface LoginType{
+    email:string;
+    password:string;
+}
 
-export default function Login (){
 
-    const [showPassword, setShowPassword]= useState(true)
+const schema = yup.object().shape({
+    email: yup.string().required('Email is required').email('Email is invalid'),
+    password: yup.string().required('Password is required').min(2, 'Password must be at least 2 characters'),
+  });
+  
+
+
+
+const Login =  () =>{
+
+    const [showPassword, setShowPassword]= useState(true);
     const router = useRouter()
+    const form = useRef(null);
+    const {notify} = useToast()
+    const dispatch = useAppDispatch();
+    const  { error,status} = useAppSelector(selectSignIn)
+    const {
+        register,handleSubmit, formState: { errors },
+    } = useForm<LoginType>({resolver:yupResolver(schema)})
+    
+    
+    const submitData:SubmitHandler<LoginType>= (data)=>{
+        console.log(console.log({data}))
+
+        dispatch(signinApi(data))
+    }
+  useEffect(()=>{
+    if(status ==="failed"){
+        notify(error?.data?.error[0])
+    }
+    if(status ==="succeeded"){
+        notify("Login Successful")
+        router.push('/admin/home')
+    }
+  },[status])
+
+  console.log({"error in front end":error})
+
+//   useEffect(()=>{
+
+//   },[status])
     return(
         <Grid >
             <Navbar/>
@@ -29,11 +79,12 @@ export default function Login (){
                <Typography className='text' fontWeight='normal' textAlign='center' marginBottom={2} variant='subtitle2' color='InactiveCaption'>
                Click here to login into your Dashboard </Typography>
                <br/>
-
+                        <form onSubmit={handleSubmit(submitData)} >
                 <Grid>
                     
+                    <>
                     <TextField 
-                    placeholder=' Username' 
+                    placeholder=' Email' 
                     // label='Username'  
                     style={{width:'100%'}} size='small'
                     InputProps={{
@@ -42,10 +93,15 @@ export default function Login (){
                             <Person color='disabled'  fontSize='13'/>
                         )
                     }}
+                    {...register("email")}
                     />
+                    <Typography >{errors.email?.message}</Typography>
+                    </>
+                    
                 </Grid>
                 {/* <br/> */}
                 <Grid container marginY={2}>
+                    <>
                     <TextField 
                     placeholder=' Password'
                     // label='Password'
@@ -69,8 +125,11 @@ export default function Login (){
                         
                         
                     }}
-                
+                    {...register("password")}
                     />
+                    <Typography >{errors.password?.message}</Typography>
+                    </>
+
                 </Grid>
                 <br/>
                 <Grid container alignItems='center' justifyContent='space-between' paddingY={1}>
@@ -80,8 +139,11 @@ export default function Login (){
                         <Checkbox/>Remember me</Typography>
                     </Grid>
                 </Grid>
-                <GreenButton text='Login' radius='10px'
-               textColor='white' paddingY={1} paddingX={2} bg='#436937'/>
+                <SubmitButton  text={status==="loading"?"Loading":'Login'} radius='10px'
+               textColor='white' paddingY={1} paddingX={2} bg='#436937'
+               
+               />
+               </form>
                 {/* <GreenButton text='Login' /> */}
                 {/* <Button variant='contained' size='large' className={styles.button}>Login</Button> */}
             </Grid>
@@ -91,3 +153,6 @@ export default function Login (){
         </Grid>
     )
 }
+
+
+export default Login
