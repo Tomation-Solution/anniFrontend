@@ -25,7 +25,6 @@ const initialState={
     initialState,
     reducers:{},
     extraReducers:(builder)=>{
-        console.log("Reducer Ran")
         builder.addCase(signinApi.pending,(state,{ payload })=>{
             state.status = "loading"
         })

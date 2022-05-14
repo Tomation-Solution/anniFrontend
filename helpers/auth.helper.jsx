@@ -16,3 +16,12 @@ export const IsSuperadmin_or_Admin = ()=>{
     }
     return false
 }
+
+export const getTokenorEmptyString  =()=>{
+   
+    const user = JSON.parse(localStorage.getItem("token"))
+    if(user){
+        return user?.token
+    }
+    return "."
+}

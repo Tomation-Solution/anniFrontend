@@ -9,7 +9,8 @@ import Paper from '@mui/material/Paper';
 import { Button, IconButton } from '@mui/material';
 import { Close, DeleteForeverRounded } from '@mui/icons-material';
 import Image from 'next/image';
-
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import CancelIcon from '@mui/icons-material/Cancel';
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -82,28 +83,72 @@ export function CustomizedTables(props) {
 
 
 export function MemberTable(props) {
+  console.log(props.rows)
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            {props.tableHead ? props.tableHead.map((e)=><StyledTableCell>{e}</StyledTableCell>):''}
+            {props.tableHead ? props.tableHead.map((e)=><StyledTableCell >{e}</StyledTableCell>):''}
+          
+
+{
+  props.forExco?
+  <>
+              <StyledTableCell>Postion Name</StyledTableCell>
+            <StyledTableCell>Can Upload Min</StyledTableCell>
+
+  </>
+:""}
+          
           </TableRow>
         </TableHead>
         <TableBody className='text'>
-          {props.rows.map((row) => (
-            <StyledTableRow key={row.name}>
+          {props.rows.filter(data=>{
+            // props.forExco==true && data.exco_info !== undefined|null
+            let showexco =true;
+            if(props.forExco==true){
+              if(data?.exco_info !== undefined|null){
+                showexco =true
+
+              }else{showexco=false}
+            }
+
+          return showexco
+          }).map((row) => (
+            <StyledTableRow key={row.user__email}>
               <StyledTableCell className='light-text' component="th" scope="row">
-                {row.name}
+                {row.user__email}
               </StyledTableCell>
               {/* <StyledTableCell className='light-text' >{row.post}</StyledTableCell> */}
-              <StyledTableCell className='light-text' >{row.email}</StyledTableCell>
-              <StyledTableCell className='light-text' >{row.phone}</StyledTableCell>
-              <StyledTableCell className='light-text' >{row.address}</StyledTableCell>
-              <StyledTableCell className='light-text' >{row.occupation}</StyledTableCell>
+              <StyledTableCell className='light-text' >{row.user__chapter__name?row.user__chapter__name:'Does Not Belong To One Yet'}</StyledTableCell>
+              <StyledTableCell className='light-text' >{row.is_financial?<CheckBoxIcon style={{'color':"green"}}/>:
+              <CancelIcon style={{'color':"red"}}/>}</StyledTableCell>
+         
+              {row?.memeber_info?
+              
+              row.memeber_info.map(e=>{
+
+
+return (
+  <StyledTableCell className='light-text' key={e.name}>{e.value}</StyledTableCell>
+
+)
+              }):""}
+
+        {
+          props.forExco?
+          <>
+  <StyledTableCell className='light-text' key={row?.exco_info[0].name}>{row?.exco_info[0].name}</StyledTableCell>
+  <StyledTableCell className='light-text' key={row?.exco_info[0].can_upload_min}>{row?.exco_info[0].can_upload_min?<CheckBoxIcon style={{'color':"green"}}/>:
+              <CancelIcon style={{'color':"red"}}/>}</StyledTableCell>
+            
+          </>:""
+        }      
+              {/* <StyledTableCell className='light-text' >{row.occupation}</StyledTableCell>
               <StyledTableCell className='light-text' >{row.course}</StyledTableCell>
               <StyledTableCell className='light-text' >{row.period}</StyledTableCell>
-              <StyledTableCell className='light-text' >{row.action}</StyledTableCell>
+              <StyledTableCell className='light-text' >{row.action}</StyledTableCell> */}
             </StyledTableRow>
           ))}
         </TableBody>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import { Delete, Edit, SearchRounded, AddCircleOutlineOutlined} from "@mui/icons-material";
 import { TextField, Grid, Button, Tabs, Tab, Box, Typography } from "@mui/material";
 import { DashboardLayout } from "../../components/Dashboard/Admin/Sidebar/dashboard-layout"; 
@@ -14,29 +14,24 @@ import EditMembers from "../../components/Modal.jsx/Members/EditMembers";
 import DeleteMembers from "../../components/Modal.jsx/Members/DeleteMembers";
 // import GreenButton from "../../components/Buttonn";
 import GreenButton from "../../components/Buttonn";
-
+import {useAppSelector,useAppDispatch} from "../../redux/hooks";
+import Spinner from "../../components/Spinner";
+import { selectMembers } from "../../redux/admin/members/membersSlice";
+import {selectDashboard} from "../../redux/admin/dashboard/dashboardSlice";
+import {getDashboardApi} from "../../redux/admin/dashboard/dashboardApi";
+import {getMembersApi} from "../../redux/admin/members/membersApi"
 
 export default function Members(){
 
     const [value, setValue] = useState(0);
     const [subcomm, setSubcom] = useState('');
-    const excoFields = ['Name', 'PortFolio', 'Email', 'Phone','Course of study', 'Period of study']
-    const memberFields = ['Name','Email', 'Phone','Address', 'Occupation','Course of study', 'Period of study','Actions']
-
+    const [excoFields,setExcoFields] = useState( ['NameS', 'PortFolio', 'Email', 'Phone','Course of study', 'Period of study'])
+    const [memberFields,setMemberFields] = useState( ['NameS','Email', 'Phone','Address', 'Occupation','Course of study', 'Period of study','Actions'])
     function createData(name, email, phone, address, occupation,course, period, action) {
         return { name, email, phone, address, occupation,course, period, action };
       }
       
-      const rows = [
-        createData('Ade Johnson', 'ade@gmail.com', '08089348232','123, Ikorodu road, Onipanu ', 'Project Manger', 'Project Management', '2010 - 2022',<Grid container justifyContent='space-between' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
-        createData('Ade Johnson', 'ade@gmail.com', '08089348232','123, Ikorodu road, Onipanu ', 'Project Manger', 'Project Management', '2010 - 2022', <Grid container justifyContent='space-between'>  <Edit sx={{color:'#365C2A'}}/> <Delete sx={{color:'red'}}/> </Grid>),
-        createData('Ade Johnson', 'ade@gmail.com', '08089348232','123, Ikorodu road, Onipanu ', 'Project Manger', 'Project Management', '2010 - 2022', <Grid container justifyContent='space-between'> <Edit sx={{color:'#365C2A'}}/> <Delete onClick={()=>alert(rows.name)} sx={{color:'red'}}/> </Grid>),
-        createData('Ade Johnson', 'ade@gmail.com', '08089348232','123, Ikorodu road, Onipanu ', 'Project Manger', 'Project Management', '2010 - 2022', <Grid container justifyContent='space-between'> <Edit sx={{color:'#365C2A'}}/> <Delete sx={{color:'red'}}/> </Grid>),
-        createData('Ade Johnson', 'ade@gmail.com', '08089348232','123, Ikorodu road, Onipanu ', 'Project Manger', 'Project Management', '2010 - 2022', <Grid container justifyContent='space-between'> <Edit sx={{color:'#365C2A'}}/> <Delete sx={{color:'red'}}/> </Grid>),
-        createData('Ade Johnson', 'ade@gmail.com', '08089348232','123, Ikorodu road, Onipanu ', 'Project Manger', 'Project Management', '2010 - 2022', <Grid container justifyContent='space-between'> <Edit sx={{color:'#365C2A'}}/> <Delete sx={{color:'red'}}/> </Grid>),
-        createData('Ade Johnson', 'ade@gmail.com', '08089348232','123, Ikorodu road, Onipanu ', 'Project Manger', 'Project Management', '2010 - 2022', <Grid container justifyContent='space-between'> <Edit sx={{color:'#365C2A'}}/> <Delete sx={{color:'red'}}/> </Grid>),
-        
-      ];
+      const [rows,setRows] = useState([]);
       
 
      const handleChange = (event, newValue) => {
@@ -84,8 +79,38 @@ export default function Members(){
       const handleClose1 = () => setOpenEditMember(false);
       const handleCloseDelete = () => setOpenDeleteMember(false);
 
+      const {status,data:adminCardDashboardData,error} = useAppSelector(selectDashboard)
+      const {
+          status:memebers_api_status,data:members_data,error:members_err } = useAppSelector(selectMembers);
+      const dispatch =  useAppDispatch();
+
+
+      useEffect(()=>{
+
+        dispatch(getDashboardApi())
+
+        dispatch(getMembersApi())
+
+  },[])
+
+
+  useEffect(()=>{
+    //  
+    if(members_data){
+        //this means get  all the extra info of the members but here i just took the first memebers extra info hopefullly other members would use same info but if not we would have do it
+        const newArrayList = ['email','chapter name','financial',...members_data[0].members[0].memeber_info.map((data)=>data.name)].map(item=>item[0].toLocaleUpperCase()+item.substr(1))
+        console.log(newArrayList)
+        setMemberFields(newArrayList)
+        setRows(members_data[0].members)
+    }
+  },[members_data])
+
+
     return (
         <DashboardLayout>
+        {status ==="loading"?<Spinner />:''}
+        {memebers_api_status ==="loading"?<Spinner />:''}
+
             <BasicModal handleClose={handleClose} open={open} body={<AddPorfolio handleClose={handleClose} />}/>
             <BasicModal handleClose={handleClose1} open={openEditMember} body={<EditMembers handleClose={handleClose1} body='hello' />}/>
             <BasicModal handleClose={handleCloseDelete} open={openDeleteMember} body={<DeleteMembers handleClose={handleCloseDelete} body='hello' />}/>
@@ -138,7 +163,9 @@ export default function Members(){
                             <Typography className='white-text'  textAlign='center' sx={{color:'white'}}>upload Multiple</Typography>
                         </Grid> */}
                     </Grid><br/>
-                    <MemberTable tableHead={memberFields} rows={rows}/>
+                    {/* <MemberTable tableHead={memberFields} rows={rows}/> */}
+                    <MemberTable tableHead={memberFields} rows={rows} forExco={false}/>
+            
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                     <Grid container my={2} py={1} className='rounded-corners' px={2}>
@@ -177,7 +204,8 @@ export default function Members(){
                         fontWeight={500}
                         />
                     </Grid><br/>
-                    <CustomizedTables tableHead={excoFields} rows={rows}/>
+                    <MemberTable tableHead={memberFields} rows={rows} forExco={true}/>
+
                 </TabPanel>
                 <TabPanel value={value} index={2}>
                     <Grid container my={2} py={1} className='rounded-corners' px={2}>

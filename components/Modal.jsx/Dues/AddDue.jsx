@@ -42,6 +42,21 @@ export default function AddDue(props){
             <TextField
                 variant='standard'
                 type='date'
+                label="Start Date"
+                fullWidth
+                InputLabelProps={{className:'light-text'}}
+            />
+                        <TextField
+                variant='standard'
+                type='time'
+                label="Start time"
+                fullWidth
+                InputLabelProps={{className:'light-text'}}
+            />
+
+<TextField
+                variant='standard'
+                type='number'
                 label="Amount"
                 fullWidth
                 InputLabelProps={{className:'light-text'}}
@@ -54,9 +69,24 @@ export default function AddDue(props){
             </Typography>
             <Menu id="basic-menu" sx={{width:'100%'}} anchorEl={anchorEl1} open={open1} onClose={handleClose1}
                 MenuListProps={{'aria-labelledby': 'basic-button',}}>
-                <MenuItem onClick={handleClose1}>Commitee</MenuItem>
+                <MenuItem onClick={handleClose1}>Member</MenuItem>
                 <MenuItem onClick={handleClose1}>Exco</MenuItem>
-                <MenuItem onClick={handleClose1}>Sub Commitee</MenuItem>
+                {/* <MenuItem onClick={handleClose1}>Sub Commitee</MenuItem> */}
+               
+            </Menu>
+            </Grid>
+
+
+            <Grid my={2} py={1} container sx={{borderRadius:1}} className='light-grey-bg'>
+            <Typography textAlign='center' id="demo-positioned-menu" onClick={handleClick1 }  className='light-text nav-link' variant="body2" component="div" sx={{ flexGrow: 1 }}>
+                <Grid container px={1} alignItems='center' justifyContent='space-between' >Schedule Type<ArrowDropDown />
+                </Grid>
+            </Typography>
+            <Menu id="basic-menu" sx={{width:'100%'}} anchorEl={anchorEl1} open={open1} onClose={handleClose1}
+                MenuListProps={{'aria-labelledby': 'basic-button',}}>
+                <MenuItem onClick={handleClose1}>Day of Week</MenuItem>
+                <MenuItem onClick={handleClose1}>Month of Year</MenuItem>
+                {/* <MenuItem onClick={handleClose1}>Sub Commitee</MenuItem> */}
                
             </Menu>
             </Grid>

@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState,useEffect  } from "react";
 import { useRouter } from 'next/router'
 import { PeopleRounded, EventAvailable, PersonPinRounded, 
     AccountBalanceWalletRounded, AddCircleOutlineOutlined, Delete, Edit} from "@mui/icons-material";
@@ -7,25 +7,41 @@ import { DashboardLayout } from "../../components/Dashboard/Admin/Sidebar/dashbo
 import StatCard from "../../components/Dashboard/Admin/StatCard";
 import PropTypes  from "prop-types";
 import {CustomizedTables, MemberTable} from "../../components/Dashboard/Admin/Tables";
-import {isLoggedIn} from "../../helpers/auth.helper"
-export default function Home(){
+import {isLoggedIn} from "../../helpers/auth.helper";
+import {getDashboardApi} from "../../redux/admin/dashboard/dashboardApi";
+import {getMembersApi} from "../../redux/admin/members/membersApi"
+import { selectMembers } from "../../redux/admin/members/membersSlice";
+import {selectDashboard} from "../../redux/admin/dashboard/dashboardSlice";
+import {useAppSelector,useAppDispatch} from "../../redux/hooks";
+import AddDue from "../../components/Modal.jsx/Dues/AddDue";
+import BasicModal from "../../components/Modals";
+
+import Spinner from "../../components/Spinner"
+const Home=() =>{
     
     const [value, setValue] = useState(0);
-    const excoFields = ['Name', 'PortFolio', 'Email', 'Phone','Course of study', 'Period of study']
-    const memberFields = ['Name','Email', 'Phone','Address', 'Occupation','Course of study', 'Period of study','Actions']
-    const router = useRouter();
-    // console.log(user)
+    const [excoFields,setExcoFields] = useState( ['NameS', 'PortFolio', 'Email', 'Phone','Course of study', 'Period of study'])
+    const [memberFields,setMemberFields] = useState( ['NameS','Email', 'Phone','Address', 'Occupation','Course of study', 'Period of study','Actions'])
+    const [rows,setRows] = useState([]);
+    const  [open,setOpen] = useState(false)
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
+    
+    const router = useRouter();
+    const {status,data:adminCardDashboardData,error} = useAppSelector(selectDashboard)
+    const {
+        status:memebers_api_status,data:members_data,error:members_err } = useAppSelector(selectMembers);
+    const dispatch =  useAppDispatch()
+    // console.log(user)
+    const formatMembersData = (member)=>{
+
+        
+    }
     function createData(name, email, phone, address, occupation,course, period, action) {
         return { name, email, phone, address, occupation,course, period, action };
       }
       
-      const rows = [
-        createData('Ade Johnson', 'ade@gmail.com', '08089348232','123, Ikorodu road, Onipanu ', 'Project Manger', 'Project Management', '2010 - 2022',<Grid container justifyContent='space-between' > <Edit sx={{color:'#365C2A'}}/> <Delete sx={{color:'red'}}/> </Grid> ),
-        createData('Ade Johnson', 'ade@gmail.com', '08089348232','123, Ikorodu road, Onipanu ', 'Project Manger', 'Project Management', '2010 - 2022', <Grid container> <Edit sx={{color:'#365C2A'}}/> <Delete sx={{color:'red'}}/> </Grid>),
-        createData('Ade Johnson', 'ade@gmail.com', '08089348232','123, Ikorodu road, Onipanu ', 'Project Manger', 'Project Management', '2010 - 2022', <Grid container> <Edit sx={{color:'#365C2A'}}/> <Delete sx={{color:'red'}}/> </Grid>),
-        
-      ];
       
 
      const handleChange = (event, newValue) => {
@@ -34,7 +50,7 @@ export default function Home(){
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
       
-        return (
+        return (           
           <div
             role="tabpanel"
             hidden={value !== index}
@@ -48,6 +64,7 @@ export default function Home(){
               </Box>
             )}
           </div>
+
         );
       }
       
@@ -65,16 +82,39 @@ export default function Home(){
       }
 
 
-  
+      useEffect(()=>{
+
+            dispatch(getDashboardApi())
+
+            dispatch(getMembersApi())
+
+      },[])
+
+      useEffect(()=>{
+        //  
+        if(members_data){
+            //this means get  all the extra info of the members but here i just took the first memebers extra info hopefullly other members would use same info but if not we would have do it
+            const newArrayList = ['email','chapter name','financial',...members_data[0].members[0].memeber_info.map((data)=>data.name)].map(item=>item[0].toLocaleUpperCase()+item.substr(1))
+            console.log(newArrayList)
+            setMemberFields(newArrayList)
+            setRows(members_data[0].members)
+        }
+      },[members_data])
     return (
+        
         <DashboardLayout>
+            <BasicModal handleClose={handleClose} open={open} body={<AddDue handleClose={handleClose} />}/>
+
+            {status ==="loading"?<Spinner />:''}
+            {memebers_api_status ==="loading"?<Spinner />:''}
+
             <Grid>
                 <Grid container justifyContent='space-around'>
                     <Grid item md={7}>
                         <Grid container justifyContent='space-around'>
                             <Grid item md={5} my={1}>
                                 <StatCard
-                                    header='21,900' 
+                                    header={adminCardDashboardData?.num_of_members }
                                     icon={<PeopleRounded sx={{color:'#E76137'}} fontSize="16"/>}
                                     iconBg='#FFC5B2'
                                     hasBg={true}
@@ -84,7 +124,8 @@ export default function Home(){
 
                             <Grid item md={5} my={1}>
                                 <StatCard
-                                    header='25' 
+                                header={adminCardDashboardData?.event_count }
+
                                     icon={<EventAvailable sx={{color:'#00B4EC'}} fontSize="16"/>}
                                     iconBg='#A9E7FA'
                                     hasBg={true}
@@ -94,7 +135,7 @@ export default function Home(){
 
                             <Grid item md={5} my={1}>
                                 <StatCard
-                                    header='30' 
+                                header={adminCardDashboardData?.exco_member }
                                     icon={<PersonPinRounded sx={{color:'#00B4EC'}} fontSize="16"/>}
                                     iconBg='#BBFFF3'
                                     hasBg={true}
@@ -104,7 +145,7 @@ export default function Home(){
 
                             <Grid item md={5} my={1}>
                                 <StatCard
-                                    header='30' 
+                                    header='0' 
                                     icon={<PersonPinRounded sx={{color:'#E76137'}} fontSize="16"/>}
                                     iconBg='#FFD7B2'
                                     hasBg={true}
@@ -119,7 +160,7 @@ export default function Home(){
                         <IconCard/>
                         <IconCard/> */}
                         <StatCard
-                            header='30' 
+                            header={adminCardDashboardData?.total_income }
                             icon={<AccountBalanceWalletRounded sx={{color:'#365C2A', fontSize:'35'}} fontSize='large' />}
                             iconBg='#FFD7B2'
                             body='Total Income'
@@ -127,14 +168,15 @@ export default function Home(){
                         />
                         <br/>
                         <StatCard
-                            header='30' 
+                        header={adminCardDashboardData?.amount_owing }
                             icon={<AccountBalanceWalletRounded sx={{color:'#F53B00', fontSize:'35'}} fontSize='large' />}
                             iconBg='#FFD7B2'
                             body='Total Outstanding'
                             color='#FFEBD9'
                         />
                         <br/>
-                        <Button sx={{bgcolor:'#203719',color:'white'}} fullWidth >
+                        
+                        <Button sx={{bgcolor:'#203719',color:'white'}} fullWidth onClick={handleOpen}>
                             <AddCircleOutlineOutlined/> &nbsp; &nbsp;
                             Add Due
                         </Button>                            
@@ -154,14 +196,17 @@ export default function Home(){
                 </Tabs>
                 <TabPanel value={value} index={0}>
                     {/* <CustomizedTables tableHead={excoFields} rows={rows}/> */}
-                    <MemberTable tableHead={memberFields} rows={rows}/>
+                    <MemberTable tableHead={memberFields} rows={rows} forExco={false}/>
                 </TabPanel>
                 <TabPanel value={value} index={1}>
-                <CustomizedTables tableHead={excoFields} rows={rows}/>
-
+                <MemberTable tableHead={memberFields} rows={rows} forExco={true}/>
                 </TabPanel>
             </Grid>
             
         </DashboardLayout>
+
     )
 }
+
+
+export default  Home
