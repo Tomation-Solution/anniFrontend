@@ -43,7 +43,7 @@ function getStyles(name: string, personName: string[], theme: Theme) {
     
   };
 }
-interface SelectOption{
+export interface SelectOption{
     name:string;
     value:string;
 }

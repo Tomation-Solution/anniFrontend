@@ -3,13 +3,14 @@ import signUpReducer from './auth/signup/signupSlice';
 import signinReducer from './auth/signin/signinSlice';
 import AdmindashboardReducer from "./admin/dashboard/dashboardSlice"
 import membersReducer from './admin/members/membersSlice';
-
+import dueReducer from './due/dueSlice';
 export const store = configureStore({
   reducer: {
     // signUp:signUpReducer,
     signIn:signinReducer,
     adminDashboard:AdmindashboardReducer,
-    members:membersReducer
+    members:membersReducer,
+    due:dueReducer
   },
 })
 
