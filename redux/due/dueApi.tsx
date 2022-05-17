@@ -27,3 +27,6 @@ export const createDueApi = createAsyncThunk(
             return thunkApi.rejectWithValue(err.response.data)
         }
     })
+
+
+export const getDueApi = null;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { AccountBalanceWalletRounded, SearchRounded,EventAvailable, PersonPinRounded, 
  Delete, Edit} from "@mui/icons-material";
 import { TextField, Grid,IconButton, Tabs, Tab, Box, Typography } from "@mui/material";
@@ -12,13 +12,24 @@ import AddDue from "../../components/Modal.jsx/Dues/AddDue";
 import BasicModal from "../../components/Modals";
 import EditDue from "../../components/Modal.jsx/Dues/EditDue";
 import DeleteDue from "../../components/Modal.jsx/Dues/DeleteDue";
-
-
+import {dueListAndOwningMembersGetApi} from "../../redux/dueListAndOwningMembers/dueListAndOwningMembersApi"
+import {selecDueListAndOwningMembers} from "../../redux/dueListAndOwningMembers/dueListAndOwningMembersSlice"
+import {selectDue} from "../../redux/due/dueSlice"
+import { getDueApi } from "../../redux/due/dueApi"
+import {useAppDispatch,useAppSelector} from "../../redux/hooks"
+import Spinner from "../../components/Spinner"
+import {selectDashboard} from "../../redux/admin/dashboard/dashboardSlice";
+import {getDashboardApi} from "../../redux/admin/dashboard/dashboardApi";
+ 
 export default function Dues(){
 
     const [value, setValue] = useState(0);
     const owingFields = ['S/N','Name', 'Email', 'Phone','Course of study', 'Outstanding']
-    const dueFields = ['S/N','Name','Amount', 'Category', 'Actions']
+    const dueFields = ['S/N','Name', 'Start Date', "Start Time",'re_occuring','For Excos', 'Outstanding']
+    const dispatch = useAppDispatch()
+    const { status ,data } = useAppSelector(selecDueListAndOwningMembers);
+    const { status:DueStatus ,data:DueData} = useAppSelector(selectDue);
+    const {status:adminCardDashboardStatus,data:adminCardDashboardData,error} = useAppSelector(selectDashboard)
 
     function createData(sn,name, amount, category,action) {
         return { sn,name, amount, category, action };
@@ -31,19 +42,10 @@ export default function Dues(){
 
       const rows = [
         createData('1', 'Annual fee', '52,500.00','General',<Grid container  > <IconButton onClick={()=>setOpenEdit(true)}> <Edit sx={{color:'#365C2A'}}/> </IconButton> <IconButton onClick={()=>setOpenDelete(true)}><Delete sx={{color:'red'}}/> </IconButton> </Grid> ),
-        createData('2', 'Annual fee', '52,500.00','General',<Grid container  > <IconButton> <Edit sx={{color:'#365C2A'}}/> </IconButton> <IconButton><Delete sx={{color:'red'}}/> </IconButton> </Grid> ),
-        createData('3', 'Annual fee', '52,500.00','General',<Grid container  > <IconButton> <Edit sx={{color:'#365C2A'}}/> </IconButton> <IconButton><Delete sx={{color:'red'}}/> </IconButton> </Grid> ),
-        createData('4', 'Annual fee', '52,500.00','General',<Grid container  > <IconButton> <Edit sx={{color:'#365C2A'}}/> </IconButton> <IconButton><Delete sx={{color:'red'}}/> </IconButton> </Grid> ),
-        createData('5', 'Annual fee', '52,500.00','General',<Grid container  > <IconButton> <Edit sx={{color:'#365C2A'}}/> </IconButton> <IconButton><Delete sx={{color:'red'}}/> </IconButton> </Grid> ),
-        
       ];
       
       const owingRows = [
         createOwingData('1', 'Bala Johnson', 'Balajhn@gmail.com', '08034754743', 'Conflict Resolution','N 52,500.00',<Grid container  > <IconButton> <Edit sx={{color:'#365C2A'}}/> </IconButton> <IconButton><Delete sx={{color:'red'}}/> </IconButton> </Grid> ), 
-        createOwingData('2', 'Bala Johnson', 'Balajhn@gmail.com', '08034754743', 'Conflict Resolution','N 52,500.00',<Grid container  > <IconButton> <Edit sx={{color:'#365C2A'}}/> </IconButton> <IconButton><Delete sx={{color:'red'}}/> </IconButton> </Grid> ), 
-        createOwingData('3', 'Bala Johnson', 'Balajhn@gmail.com', '08034754743', 'Conflict Resolution','N 52,500.00',<Grid container  > <IconButton> <Edit sx={{color:'#365C2A'}}/> </IconButton> <IconButton><Delete sx={{color:'red'}}/> </IconButton> </Grid> ), 
-        createOwingData('4', 'Bala Johnson', 'Balajhn@gmail.com', '08034754743', 'Conflict Resolution','N 52,500.00',<Grid container  > <IconButton> <Edit sx={{color:'#365C2A'}}/> </IconButton> <IconButton><Delete sx={{color:'red'}}/> </IconButton> </Grid> ), 
-        createOwingData('5', 'Bala Johnson', 'Balajhn@gmail.com', '08034754743', 'Conflict Resolution','N 52,500.00',<Grid container  > <IconButton> <Edit sx={{color:'#365C2A'}}/> </IconButton> <IconButton><Delete sx={{color:'red'}}/> </IconButton> </Grid> ), 
       ];
 
      const handleChange = (event, newValue) => {
@@ -92,8 +94,35 @@ export default function Dues(){
           'aria-controls': `simple-tabpanel-${index}`,
         };
       }
+
+
+      useEffect(()=>{
+        dispatch(dueListAndOwningMembersGetApi())
+        dispatch(getDashboardApi())
+
+
+      },[])
+
+      useEffect(()=>{
+        if(DueStatus==="succeeded"){
+
+          dispatch(dueListAndOwningMembersGetApi())
+          dispatch(getDashboardApi())
+        }
+
+
+      },[DueStatus])
+
+      
+
+      console.log({data,adminCardDashboardData})
     return (
         <DashboardLayout>
+            {status ==="loading"?<Spinner />:''}
+            {adminCardDashboardStatus ==="loading"?<Spinner />:''}
+
+            {DueStatus ==="loading"?<Spinner />:''}
+            
             <BasicModal handleClose={handleClose} open={open} body={<AddDue handleClose={handleClose} />}/>
             <BasicModal handleClose={handleClose1} open={openEdit} body={<EditDue handleClose={handleClose1} />}/>
             <BasicModal handleClose={handleCloseDelete} open={openDelete} body={<DeleteDue handleClose={handleCloseDelete} />}/>
@@ -104,7 +133,7 @@ export default function Dues(){
                         <Grid container justifyContent='space-around'>
                             <Grid item md={3} my={1}>
                                 <StatCard
-                                    header='N 210,900.00' 
+                                    header={adminCardDashboardData?.total_income}
                                     icon={<AccountBalanceWalletRounded sx={{color:'#E76137'}} fontSize="16"/>}
                                     iconBg='#FFC5B2'
                                     hasBg={true}
@@ -114,7 +143,7 @@ export default function Dues(){
 
                             <Grid item md={3} my={1}>
                                 <StatCard
-                                    header='N 180,500.00' 
+                                    header={adminCardDashboardData?.amount_owing} 
                                     icon={<AccountBalanceWalletRounded sx={{color:'#00B4EC'}} fontSize="16"/>}
                                     iconBg='#A9E7FA'
                                     hasBg={true}
@@ -124,7 +153,7 @@ export default function Dues(){
 
                             <Grid item md={3} my={1}>
                                 <StatCard
-                                    header='30' 
+                                    header={data?data[0].list_of_owing_members.length:"0"}
                                     icon={<PersonPinRounded sx={{color:'#00B4EC'}} fontSize="16"/>}
                                     iconBg='#BBFFF3'
                                     hasBg={true}
@@ -180,7 +209,7 @@ export default function Dues(){
                     {/* <CustomizedTables tableHead={excoFields} rows={rows}/> */}
                     {/* <HeadText text='Dues'/><br/> */}
                     {/* <MemberTable tableHead={memberFields} rows={rows}/> */}
-                    <DuesTable tableHead={dueFields} rows={rows}/>
+                    <DuesTable tableHead={dueFields} rows={data?data[0].dues:[]}/>
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                 <Grid container my={2} py={1} className='rounded-corners' px={2}>

@@ -175,16 +175,18 @@ export function DuesTable(props) {
           </TableRow>
         </TableHead>
         <TableBody className='text'>
-          {props.rows.map((row) => (
+          {props.rows.map((row,index) => (
             <StyledTableRow key={row.name}>
               <StyledTableCell className='light-text' component="th" scope="row">
-                {row.sn}
+                {index+1}
               </StyledTableCell>
               {/* <StyledTableCell className='light-text' >{row.post}</StyledTableCell> */}
-              <StyledTableCell className='light-text' >{row.name}</StyledTableCell>
+              <StyledTableCell className='light-text' >{row.Name}</StyledTableCell>
+              <StyledTableCell className='light-text' >{row.startDate}</StyledTableCell>
+              <StyledTableCell className='light-text' >{row.startTime}</StyledTableCell>
+              <StyledTableCell className='light-text' >{row.re_occuring?"True":"False"}</StyledTableCell>
+              <StyledTableCell className='light-text' >{row.is_for_excos?"True":"False"}</StyledTableCell>
               <StyledTableCell className='light-text' >{row.amount}</StyledTableCell>
-              <StyledTableCell className='light-text' >{row.category}</StyledTableCell>
-              <StyledTableCell className='light-text' >{row.action}</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>

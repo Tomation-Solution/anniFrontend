@@ -47,7 +47,7 @@ const due = createSlice({
             state.status="succeeded";
             if(state.data){
 
-                state.data = [...state.data,payload[0]]
+                state.data = [payload[0],...state.data,]
             }
             else{
                 state.data =[payload[0]]
