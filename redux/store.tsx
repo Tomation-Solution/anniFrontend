@@ -5,6 +5,7 @@ import AdmindashboardReducer from "./admin/dashboard/dashboardSlice"
 import membersReducer from './admin/members/membersSlice';
 import dueReducer from './due/dueSlice';
 import dueListAndOwningMembersReducer from './dueListAndOwningMembers/dueListAndOwningMembersSlice';
+import eventReducer from './events/eventSlice';
 export const store = configureStore({
   reducer: {
     // signUp:signUpReducer,
@@ -13,6 +14,7 @@ export const store = configureStore({
     members:membersReducer,
     due:dueReducer,
     dueListAndOwningMembers:dueListAndOwningMembersReducer,
+    event:eventReducer,
   },
 })
 

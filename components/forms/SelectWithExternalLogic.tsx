@@ -5,25 +5,35 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import {SelectOption} from "./multiSelectCheckBox"
-interface SelectWithLabelPropType{
-  Label:string;
-  name:string;
-  setValue:(name:string,value:any)=>void;
-  options:SelectOption[]
+
+interface SelectWithExternalLogicPropType{
+    Label:string;
+    name:string;
+    // setValue:(name:string,value:any)=>void;
+    options:SelectOption[]
+    customFunc:(currentInput:string|boolean)=>void
 }
 
-const SelectWithLabel:React.FC<SelectWithLabelPropType> = ({
-  Label,name,setValue,options
-}) => {
-  const [input, setInput] = React.useState('');
 
-  const handleChange = (event: SelectChangeEvent) => {
+//NOTE so this component helps us choose what to do with the current selected input
+const SelectWithExternalLogic:React.FC<SelectWithExternalLogicPropType>=({
+
+    Label,name,options,customFunc
+})=>{
+
+    const [input, setInput] = React.useState<string|boolean>('');
+
+
+    const handleChange= (event:SelectChangeEvent)=>{
+    
+        
     setInput(event.target.value as string);
-    setValue(name,event.target.value);
-  };
+    customFunc(event.target.value)
 
-  return (
-    <Box sx={{ width: "100%" }}>
+    }
+    return (
+
+        <Box sx={{ width: "100%" }}>
       <FormControl fullWidth>
         <InputLabel id={Label}>{Label}</InputLabel>
         <Select
@@ -38,7 +48,8 @@ const SelectWithLabel:React.FC<SelectWithLabelPropType> = ({
         </Select>
       </FormControl>
     </Box>
-  );
+    )
+
 }
 
-export default  SelectWithLabel
+export default SelectWithExternalLogic

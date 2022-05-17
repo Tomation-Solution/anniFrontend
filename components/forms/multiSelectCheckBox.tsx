@@ -80,6 +80,7 @@ const MultipleSelect:React.FC<MultipleSelectType>=({setValue,name,option,label="
           onChange={handleChange}
           input={<OutlinedInput label="Name" />}
           MenuProps={MenuProps}
+          required
         //   {...rest}
         
         >

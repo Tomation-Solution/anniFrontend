@@ -52,7 +52,7 @@ const due = createSlice({
             else{
                 state.data =[payload[0]]
             }
-            console.log({"state of success":payload})
+            // console.log({"state of success":payload})
             //add the reuturn data to redux cylce
         })
 
