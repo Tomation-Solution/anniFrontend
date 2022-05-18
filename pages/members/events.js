@@ -9,7 +9,7 @@ import { DashboardLayout } from "../../components/Dashboard/Member/Sidebar/dashb
 
 export default function Events(){
     const [value, onChange] = useState(new Date());
-    console.log(value)
+    console.log("wowo fuc")
 
     return(
         <DashboardLayout>

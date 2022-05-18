@@ -13,7 +13,7 @@ import {CreateDUeType} from "../../../redux/due/dueApi";
 import SelectWithLabel from "../../forms/SelectWithLable";
 import {useAppDispatch,useAppSelector} from "../../../redux/hooks";
 import { selectDue } from "../../../redux/due/dueSlice";
-import { createDueApi } from "../../../redux/due/dueApi";
+import { createDueApi,getDueApi2 } from "../../../redux/due/dueApi";
 import useToast from "../../../hooks/useToast"
 const schema = yup.object().shape({
    name:yup.string().required(),
@@ -67,8 +67,9 @@ export default function AddDue(props){
     };
     console.log({errors,status,error})
     useEffect(()=>{
-        if(status==="succeeded"){
+        if(status==="created"){
             notify("Due Was Created Successfull");
+            dispatch(getDueApi2())
         }
 
     },[status])

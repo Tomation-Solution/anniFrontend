@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import { Delete, Edit, SearchRounded, AddCircleOutlineOutlined} from "@mui/icons-material";
 import { TextField, Grid, Button, Tabs, Tab, Box, Typography } from "@mui/material";
 import { DashboardLayout } from "../../components/Dashboard/Admin/Sidebar/dashboard-layout"; 
@@ -12,6 +12,12 @@ import DeleteMembers from "../../components/Modal.jsx/Members/DeleteMembers";
 import GreenButton from "../../components/Buttonn";
 import DeleteEvent from "../../components/Modal.jsx/events/DeleteEvent";
 import AddEvent from "../../components/Modal.jsx/events/AddEvent";
+import {useAppDispatch,useAppSelector}  from "../../redux/hooks";
+import { selectEvent } from "../../redux/events/eventSlice";
+import Spinner from "../../components/Spinner"
+import { getEventsApi2,creatEventsApia } from "../../redux/events/eventsApi"
+
+
 
 export default function Events(){
 
@@ -21,6 +27,8 @@ export default function Events(){
     const nationalEventFields = ['S/N','Event Name', 'Date', 'Event Type', 'Address', 'Actions']
     const eventFields = ['S/N','Event Name', 'Date', 'Event Type', 'Address', 'Actions']
     const memberFields = ['Name','Email', 'Phone','Address', 'Occupation','Course of study', 'Period of study','Actions']
+    const dispatch = useAppDispatch();
+    const { status,error,data } =useAppSelector(selectEvent);
 
     function createData(sn, name, date, category, type, address, action) {
         return { sn, name, date, category, type, address,action };
@@ -39,47 +47,23 @@ export default function Events(){
       }
       
       const allRows = [
-        createData('1', 'National Meeting', 'March 12, 2022','National','Free',  'https://www.zoom.com/uasix',<Grid container justifyContent='space-between' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
-        createData('2', 'National Meeting', 'March 12, 2022','National','Free',  'https://www.zoom.com/uasix',<Grid container justifyContent='space-between' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
-        createData('3', 'National Meeting', 'March 12, 2022','Lagos Chapter','Free',  'https://www.zoom.com/uasix',<Grid container justifyContent='space-between' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
-        createData('4', 'National Children day Awareness', 'March 12, 2022','Ogun Chapter','Paid - N 5000',  'https://www.zoom.com/uasix',<Grid container justifyContent='space-between' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
-        createData('5', 'National Meeting', 'March 12, 2022','General','Free',  'https://www.zoom.com/uasix',<Grid container justifyContent='space-between' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
-        createData('6', 'National Meeting', 'March 12, 2022','General','Free',  'https://www.zoom.com/uasix',<Grid container justifyContent='space-between' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
-        createData('7', 'National Meeting', 'March 12, 2022','General','Free',  'https://www.zoom.com/uasix',<Grid container justifyContent='space-between' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
         createData('8', 'National Meeting', 'March 12, 2022','General','Free',  'https://www.zoom.com/uasix',<Grid container justifyContent='space-between' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
-        
       ];
 
       const nationalRows = [
         createNationalData('1', 'National Meeting', 'March 12, 2022','Free',  'https://www.zoom.com/uasix',<Grid container justifyContent='space-between' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
-        createNationalData('2', 'National Meeting', 'March 12, 2022','Free',  'https://www.zoom.com/uasix',<Grid container justifyContent='space-between' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
-        createNationalData('3', 'National Meeting', 'March 12, 2022','Free',  'https://www.zoom.com/uasix',<Grid container justifyContent='space-between' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
-        createNationalData('4', 'National Meeting', 'March 12, 2022','Free',  'https://www.zoom.com/uasix',<Grid container justifyContent='space-between' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
-        createNationalData('5', 'National Meeting', 'March 12, 2022','Free',  'https://www.zoom.com/uasix',<Grid container justifyContent='space-between' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
-        createNationalData('6', 'National Meeting', 'March 12, 2022','Free',  'https://www.zoom.com/uasix',<Grid container justifyContent='space-between' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
       ];
 
       const stateRows = [
-        createStateData('1', 'National Meeting', 'March 12, 2022','Free',  'https://www.zoom.com/uasix',<Grid container justifyContent='space-between' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
-        createStateData('2', 'National Meeting', 'March 12, 2022','Free',  'https://www.zoom.com/uasix',<Grid container justifyContent='space-between' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
         createStateData('3', 'National Meeting', 'March 12, 2022','Free',  'https://www.zoom.com/uasix',<Grid container justifyContent='space-between' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
       ];
 
       const memberRows = [
         createMemberData('1', 'National Meeting', 'March 12, 2022','Free',  'https://www.zoom.com/uasix',<Grid container justifyContent='space-between' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
-        // createNationalData('2', 'National Meeting', 'March 12, 2022','Free',  'https://www.zoom.com/uasix',<Grid container justifyContent='space-between' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
-        // createNationalData('3', 'National Meeting', 'March 12, 2022','Free',  'https://www.zoom.com/uasix',<Grid container justifyContent='space-between' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
       ];
       
       const rows = [
-        createData('Ade Johnson', 'ade@gmail.com', '08089348232','123, Ikorodu road, Onipanu ', 'Project Manger', 'Project Management', '2010 - 2022',<Grid container justifyContent='space-between' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
-        createData('Ade Johnson', 'ade@gmail.com', '08089348232','123, Ikorodu road, Onipanu ', 'Project Manger', 'Project Management', '2010 - 2022', <Grid container justifyContent='space-between'>  <Edit sx={{color:'#365C2A'}}/> <Delete sx={{color:'red'}}/> </Grid>),
-        createData('Ade Johnson', 'ade@gmail.com', '08089348232','123, Ikorodu road, Onipanu ', 'Project Manger', 'Project Management', '2010 - 2022', <Grid container justifyContent='space-between'> <Edit sx={{color:'#365C2A'}}/> <Delete onClick={()=>alert(rows.name)} sx={{color:'red'}}/> </Grid>),
-        createData('Ade Johnson', 'ade@gmail.com', '08089348232','123, Ikorodu road, Onipanu ', 'Project Manger', 'Project Management', '2010 - 2022', <Grid container justifyContent='space-between'> <Edit sx={{color:'#365C2A'}}/> <Delete sx={{color:'red'}}/> </Grid>),
-        createData('Ade Johnson', 'ade@gmail.com', '08089348232','123, Ikorodu road, Onipanu ', 'Project Manger', 'Project Management', '2010 - 2022', <Grid container justifyContent='space-between'> <Edit sx={{color:'#365C2A'}}/> <Delete sx={{color:'red'}}/> </Grid>),
-        createData('Ade Johnson', 'ade@gmail.com', '08089348232','123, Ikorodu road, Onipanu ', 'Project Manger', 'Project Management', '2010 - 2022', <Grid container justifyContent='space-between'> <Edit sx={{color:'#365C2A'}}/> <Delete sx={{color:'red'}}/> </Grid>),
-        createData('Ade Johnson', 'ade@gmail.com', '08089348232','123, Ikorodu road, Onipanu ', 'Project Manger', 'Project Management', '2010 - 2022', <Grid container justifyContent='space-between'> <Edit sx={{color:'#365C2A'}}/> <Delete sx={{color:'red'}}/> </Grid>),
-        
+      createData('Ade Johnson', 'ade@gmail.com', '08089348232','123, Ikorodu road, Onipanu ', 'Project Manger', 'Project Management', '2010 - 2022',<Grid container justifyContent='space-between' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
       ];
       
 
@@ -127,9 +111,17 @@ export default function Events(){
       const handleClose = () => setOpen(false);
       const handleClose1 = () => setOpenEditMember(false);
       const handleCloseDelete = () => setOpenDeleteMember(false);
+      console.log("wowo fuc")
 
-    return (
+  
+      useEffect(()=>{
+        console.log("loading my guy wait")
+          dispatch(getEventsApi2())
+      },[])
+      console.log({"data from page":data,"errorpage":error})
+      return (
         <DashboardLayout>
+          {status==="loading"?<Spinner/>:""}
             <BasicModal handleClose={handleClose} open={open} body={<AddEvent handleClose={handleClose} />}/>
             <BasicModal handleClose={handleClose1} open={openEditMember} body={<EditEvent handleClose={handleClose1} body='hello' />}/>
             <BasicModal handleClose={handleCloseDelete} open={openDeleteMember} body={<DeleteEvent handleClose={handleCloseDelete} body='hello' />}/>
@@ -170,7 +162,7 @@ export default function Events(){
                         click={()=>setOpen(true)}
                         />
                     </Grid><br/>
-                    <AllEventTable tableHead={allEventFields} rows={allRows}/>
+                    <AllEventTable tableHead={allEventFields} rows={data}/>
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                     <Grid container my={2} py={1} className='rounded-corners' px={2}>
@@ -199,7 +191,9 @@ export default function Events(){
                         fontWeight={500}
                         /> */}
                     </Grid><br/>
-                    <NationalEventTable tableHead={nationalEventFields} rows={nationalRows}/>
+                    {/* must me null if u want it to be for National */}
+                    <AllEventTable tableHead={allEventFields} rows={data.filter(d=>d.chapters_id===null)}/>
+
                 </TabPanel>
                 <TabPanel value={value} index={2}>
                     <Grid container my={2} py={1} className='rounded-corners' px={2}>
@@ -220,7 +214,9 @@ export default function Events(){
                         </Grid>
                        
                     </Grid><br/>
-                    <StateEventTable tableHead={eventFields} rows={stateRows}/>
+                    {/* for state means is it cant be null */}
+                    <AllEventTable tableHead={allEventFields} rows={data.filter(d=>d.chapters_id!==null)}/>
+
                 </TabPanel>
                 <TabPanel value={value} index={3}>
                     <Grid container textAlign='center'  my={2} py={1} className='rounded-corners' px={2}>

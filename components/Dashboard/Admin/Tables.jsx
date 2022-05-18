@@ -6,8 +6,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Button, IconButton } from '@mui/material';
-import { Close, DeleteForeverRounded } from '@mui/icons-material';
+import { Grid,Button, IconButton } from '@mui/material';
+import { Close, DeleteForeverRounded,Delete,Edit} from '@mui/icons-material';
 import Image from 'next/image';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -335,18 +335,38 @@ export function AllEventTable(props) {
           </TableRow>
         </TableHead>
         <TableBody className='text'>
-          {props.rows.map((row) => (
-            <StyledTableRow key={row.name}>
+          {props.rows.map((row,index) => (
+            <StyledTableRow key={index}>
               <StyledTableCell className='light-text' component="th" scope="row">
-                {row.sn}
+                {index+1}
               </StyledTableCell>
               {/* <StyledTableCell className='light-text' >{row.post}</StyledTableCell> */}
               <StyledTableCell className='light-text' >{row.name}</StyledTableCell>
-              <StyledTableCell className='light-text' >{row.date}</StyledTableCell>
-              <StyledTableCell className='light-text' >{row.category}</StyledTableCell>
-              <StyledTableCell className='light-text' >{row.type}</StyledTableCell>
-              <StyledTableCell className='light-text' >{row.address}</StyledTableCell>
-              <StyledTableCell className='light-text' >{row.action}</StyledTableCell>
+              <StyledTableCell className='light-text' >{row.startDate}</StyledTableCell>
+              <StyledTableCell className='light-text' >{()=>{
+                let val;
+                if(row.is_for_excos){
+                    val="Excos"
+                }
+                if (row.is_commitee){
+                  val = "For Commitee:"+row.commitee_name
+                }
+                if(!row.is_for_excos&&!is_commitee){
+                  val = "All Members"
+                }
+              }}</StyledTableCell>
+              <StyledTableCell className='light-text' >{row.is_paid_event?"Paid":"Free"}</StyledTableCell>
+              <StyledTableCell className='light-text' >{"At my house dudes"}</StyledTableCell>
+              <StyledTableCell className='light-text' >
+
+              <Grid container justifyContent='space-between' > <Edit 
+              // onClick={()=>setOpenEditMember(true)} 
+              sx={{color:'#365C2A'}}/> 
+                      <Delete 
+                      // onClick={()=>setOpenDeleteMember(true)} 
+                      sx={{color:'red'}}/> 
+                      </Grid>
+              </StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>

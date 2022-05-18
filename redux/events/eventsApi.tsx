@@ -48,17 +48,19 @@ export const setEventStateToIdle = createAsyncThunk(
 
 
 
-export const getEventsApi = createAsyncThunk(
-    "events/getEventsApi",
-    async ({isChapter=false}:{isChapter:boolean},thunkApi)=>{
 
+export const getEventsApi2 = createAsyncThunk(
+    "events/getEventsApi",
+    async (data,thunkApi)=>{
+// console.log({isChapter})
        try {
-        const resp = await axios.get(`/tenant/event/eventview/get_events/${isChapter?"?is_chapter=true":""}`)
+        const resp = await axios.get(`/tenant/event/eventview/get_events/`)
        let  data  = resp.data.data
         console.log({data})
         return resp.data.data
-       } catch (err:any) {
-           console.log({err})
+       
+    } catch (err:any) {
+           console.log({"some err from api":err})
         return thunkApi.rejectWithValue(err.response.data)
        }
 

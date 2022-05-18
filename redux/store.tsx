@@ -14,7 +14,7 @@ export const store = configureStore({
     members:membersReducer,
     due:dueReducer,
     dueListAndOwningMembers:dueListAndOwningMembersReducer,
-    event:eventReducer,
+    events:eventReducer,
   },
 })
 

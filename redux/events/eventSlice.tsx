@@ -1,12 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {EventType,creatEventsApi,setEventStateToIdle,getEventsApi} from "./eventsApi"
+import {EventType,creatEventsApi,setEventStateToIdle,getEventsApi2} from "./eventsApi"
 import { RootState } from "../store";
 
 
 
 
 interface initialStateType{
-    status: "idle" | "loading"|"created" | "succeeded" | "failed";
+    status: "idle" | "loading"|"created" | "succeeded" | "failed"|"created";
     isLoggedIn: boolean;
     error: any;
     data: null | EventType[]
@@ -16,27 +16,37 @@ const initialState ={
     status:"idle",
     isLoggedIn:false,
     error:null,
-    data:null
+    data:[]
 
 }  as  initialStateType
 
 
 
-const event = createSlice({
+const events = createSlice({
     name:'events',
     initialState,
     reducers:{},
     extraReducers:(builder)=>{
         // getEventsApi
 
-        // builder.addCase(getEventsApi.pending,(state,{payload})=>{
-        //     state.status ="loading"
-        // })
+        builder.addCase(getEventsApi2.pending,(state,{payload})=>{
+            state.status ="loading"
+        })
 
-        // builder.addCase(getEventsApi.fulfilled,(state,{payload})=>{
-        //     state.status ="succeeded"
-        //     console.log({"events list":payload})
-        // })
+        builder.addCase(getEventsApi2.fulfilled,(state,{payload})=>{
+            state.status ="succeeded"
+            
+            console.log({"events list":payload})
+
+            state.data = payload
+        })
+
+
+        builder.addCase(getEventsApi2.rejected,(state,{payload})=>{
+            state.status ="failed"
+            console.log({"events error":payload})
+            state.error = payload
+        })
 
 
 
@@ -64,10 +74,10 @@ const event = createSlice({
 
             if(state.data){
 
-                state.data = [payload[0],...state.data,]
+                state.data = [payload[0],...state.data,];
             }
             else{
-                state.data =[payload[0]]
+                state.data =payload;
             }
             console.log({"createSuccess Events":payload})
             
@@ -81,5 +91,5 @@ const event = createSlice({
     }
 })
 
-export const selectEvent =(state:RootState)=>state.event;
-export default event.reducer;
+export const selectEvent =(state:RootState)=>state.events;
+export default events.reducer;
