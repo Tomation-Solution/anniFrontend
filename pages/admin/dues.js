@@ -24,7 +24,7 @@ import {getDashboardApi} from "../../redux/admin/dashboard/dashboardApi";
 export default function Dues(){
 
     const [value, setValue] = useState(0);
-    const owingFields = ['S/N','Name', 'Email', 'Phone','Course of study', 'Outstanding']
+    const owingFields = ['S/N','Email', 'is Exco', 'Outstanding']
     const dueFields = ['S/N','Name', 'Start Date', "Start Time",'re_occuring','For Excos', 'Outstanding']
     const dispatch = useAppDispatch()
     const { status ,data } = useAppSelector(selecDueListAndOwningMembers);
@@ -45,7 +45,6 @@ export default function Dues(){
       ];
       
       const owingRows = [
-        createOwingData('1', 'Bala Johnson', 'Balajhn@gmail.com', '08034754743', 'Conflict Resolution','N 52,500.00',<Grid container  > <IconButton> <Edit sx={{color:'#365C2A'}}/> </IconButton> <IconButton><Delete sx={{color:'red'}}/> </IconButton> </Grid> ), 
       ];
 
      const handleChange = (event, newValue) => {
@@ -115,7 +114,8 @@ export default function Dues(){
 
       
 
-      console.log({data,adminCardDashboardData})
+      console.log(data)
+      console.log({"tecca":data[0].list_of_owing_members})
     return (
         <DashboardLayout>
             {status ==="loading"?<Spinner />:''}
@@ -241,7 +241,10 @@ export default function Dues(){
                         /> */}
                         
                     </Grid><br/>
-                    <OwingTable tableHead={owingFields} rows={owingRows}/>
+                    <OwingTable
+                     tableHead={owingFields}
+                     rows={data[0].list_of_owing_members}
+                     />
 
                 </TabPanel>
             </Grid>

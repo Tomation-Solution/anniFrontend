@@ -214,17 +214,22 @@ export function OwingTable(props) {
           </TableRow>
         </TableHead>
         <TableBody className='text'>
-          {props.rows.map((row) => (
+          {props.rows.map((row,index) => (
             <StyledTableRow key={row.name}>
               <StyledTableCell className='light-text' component="th" scope="row">
-                {row.sn}
+                {index+1}
               </StyledTableCell>
               {/* <StyledTableCell className='light-text' >{row.post}</StyledTableCell> */}
-              <StyledTableCell className='light-text' >{row.name}</StyledTableCell>
-              <StyledTableCell className='light-text' >{row.email}</StyledTableCell>
-              <StyledTableCell className='light-text' >{row.phone}</StyledTableCell>
-              <StyledTableCell className='light-text' >{row.course}</StyledTableCell>
-              <StyledTableCell className='light-text' >{row.amount}</StyledTableCell>
+              <StyledTableCell className='light-text' >{row.user__email}</StyledTableCell>
+              <StyledTableCell className='light-text' >{row.is_exco?
+              
+              <CheckBoxIcon style={{'color':"green"}}/>:
+              <CancelIcon style={{'color':"red"}}/>
+            
+            }</StyledTableCell>
+              <StyledTableCell className='light-text' >{row.amount_owing}</StyledTableCell>
+              {/* <StyledTableCell className='light-text' >{row.course}</StyledTableCell>
+              <StyledTableCell className='light-text' >{row.amount}</StyledTableCell> */}
             </StyledTableRow>
           ))}
         </TableBody>
@@ -343,7 +348,7 @@ export function AllEventTable(props) {
               {/* <StyledTableCell className='light-text' >{row.post}</StyledTableCell> */}
               <StyledTableCell className='light-text' >{row.name}</StyledTableCell>
               <StyledTableCell className='light-text' >{row.startDate}</StyledTableCell>
-              <StyledTableCell className='light-text' >{()=>{
+              <StyledTableCell className='light-text' >{(()=>{
                 let val;
                 if(row.is_for_excos){
                     val="Excos"
@@ -351,10 +356,11 @@ export function AllEventTable(props) {
                 if (row.is_commitee){
                   val = "For Commitee:"+row.commitee_name
                 }
-                if(!row.is_for_excos&&!is_commitee){
+                if(!row.is_for_excos&&!row.is_commitee){
                   val = "All Members"
                 }
-              }}</StyledTableCell>
+                return val
+              })()}</StyledTableCell>
               <StyledTableCell className='light-text' >{row.is_paid_event?"Paid":"Free"}</StyledTableCell>
               <StyledTableCell className='light-text' >{"At my house dudes"}</StyledTableCell>
               <StyledTableCell className='light-text' >
