@@ -1,6 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {EventType,creatEventsApi,setEventStateToIdle,getEventsApi2} from "./eventsApi"
 import { RootState } from "../store";
+
 
 
 
@@ -25,7 +26,19 @@ const initialState ={
 const events = createSlice({
     name:'events',
     initialState,
-    reducers:{},
+    reducers:{
+        updateEventWithoutAsync:(state,action:PayloadAction<{data:EventType}>)=>{
+            //
+            if(state.data){
+                state.data = [...state.data.map(data=>{
+                    if(data.id===action.payload.data.id){
+                        return action.payload.data
+                    }
+                    return data
+                })]
+            }
+        }
+    },
     extraReducers:(builder)=>{
         // getEventsApi
 
@@ -91,5 +104,7 @@ const events = createSlice({
     }
 })
 
+
+export const {updateEventWithoutAsync} = events.actions
 export const selectEvent =(state:RootState)=>state.events;
 export default events.reducer;

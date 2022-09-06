@@ -23,7 +23,7 @@ export default function Events(){
 
     const [value, setValue] = useState(0);
     const [subcomm, setSubcom] = useState('');
-    const allEventFields = ['S/N','Event Name', 'Date','Category', 'Event Type', 'Address', 'Actions']
+    const allEventFields = ['S/N','Event Name', 'Date','Category', 'Event Type', 'Address','Active Status', 'Actions']
     const nationalEventFields = ['S/N','Event Name', 'Date', 'Event Type', 'Address', 'Actions']
     const eventFields = ['S/N','Event Name', 'Date', 'Event Type', 'Address', 'Actions']
     const memberFields = ['Name','Email', 'Phone','Address', 'Occupation','Course of study', 'Period of study','Actions']
@@ -127,7 +127,7 @@ export default function Events(){
             <BasicModal handleClose={handleCloseDelete} open={openDeleteMember} body={<DeleteEvent handleClose={handleCloseDelete} body='hello' />}/>
             <Grid>    
                 <Tabs value={value} onChange={handleChange} >
-                    <Tab  {...a11yProps(0)} label="All Events" className='text' sx={{textTransform:'capitalize'}} >Hell</Tab>
+                    <Tab  {...a11yProps(0)} label="All Events" className='text' sx={{textTransform:'capitalize'}}/>
                     <Tab  {...a11yProps(3)} label="National Events" className='text' sx={{textTransform:'capitalize'}} />
                     <Tab  {...a11yProps(1)} label="State Events" className='text' sx={{textTransform:'capitalize'}} />
                     <Tab  {...a11yProps(2)} label="Member Events" className='text' sx={{textTransform:'capitalize'}} />
@@ -173,7 +173,7 @@ export default function Events(){
                                 placeholder='Search'
                                 sx={{width:'100%',  borderBottom:'none'}}
                                 InputProps={{disableUnderline:true}}
-                                onChange={()=>setSubcom(event.target.value)}
+                                onChange={(event)=>setSubcom(event.target.value)}
                             />
 
                             
@@ -192,7 +192,7 @@ export default function Events(){
                         /> */}
                     </Grid><br/>
                     {/* must me null if u want it to be for National */}
-                    <AllEventTable tableHead={allEventFields} rows={data.filter(d=>d.chapters_id===null)}/>
+                    <AllEventTable tableHead={allEventFields} rows={data.filter(d=>d?.chapters_id===null)}/>
 
                 </TabPanel>
                 <TabPanel value={value} index={2}>

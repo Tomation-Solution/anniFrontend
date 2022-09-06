@@ -5,7 +5,7 @@ import {useEffect} from 'react'
 
 
 const useToast = ()=>{
-    const notify = (msg) => toast(msg);
+    const notify = (msg:string,type?:'error'|'success') => type=='success'?toast.success(msg):toast.error(msg);
 
     // useEffect(()=>{
     //     notify()

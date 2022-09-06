@@ -19,6 +19,7 @@ export interface EventType{
     "mintues":string;
     "hour":string;
     "for_chapters":boolean;
+    'address':string;
 }
 
 
@@ -54,7 +55,7 @@ export const getEventsApi2 = createAsyncThunk(
     async (data,thunkApi)=>{
 // console.log({isChapter})
        try {
-        const resp = await axios.get(`/tenant/event/eventview/get_events/`)
+        const resp = await axios.get(`/tenant/event/eventview/`)
        let  data  = resp.data.data
         console.log({data})
         return resp.data.data

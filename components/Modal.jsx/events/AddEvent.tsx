@@ -10,7 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {selectEvent } from  "../../../redux/events/eventSlice";
-import {EventType,creatEventsApi,setEventStateToIdle} from  "../../../redux/events/eventsApi";
+import {EventType,creatEventsApi,setEventStateToIdle, getEventsApi2} from  "../../../redux/events/eventsApi";
 import MultipleSelect from "../../forms/multiSelectCheckBox";
 import {useAppDispatch,useAppSelector,} from "../../../redux/hooks"
 import MarkoBtn from "../../MarkoBtn"
@@ -25,8 +25,11 @@ work on some things like
     
 */
 const schema = yup.object().shape({
+    'address':yup.string(),
     "is_paid_event":yup.boolean(),
-    "re_occuring":yup.boolean(),
+    "re_occuring":yup.boolean().default(function (){
+        return false
+    }),
     "is_virtual":yup.boolean(),
     "is_active":yup.boolean().default(function (){
         return false
@@ -47,9 +50,7 @@ const schema = yup.object().shape({
         return "08"
     }),
     "is_for_excos":yup.boolean(),
-    "for_chapters":yup.boolean().required().default(function (){
-        return  false
-    }),
+    
     "amount":yup.number().default(function (){
         return 0.00
     }),
@@ -98,7 +99,6 @@ export default function AddEvent(props){
             new_data["schedule"] =['0']
         }
 
-        // console.log({"Submitted new_data":new_data})
 
         dispatch(creatEventsApi(new_data))
     }
@@ -108,9 +108,11 @@ export default function AddEvent(props){
             dispatch(setEventStateToIdle())
         }
     },[status])
-    console.log(data,status,errors)
+
     return (
-        <form onSubmit={handleSubmit(submitData)}>
+        <form
+         onSubmit={handleSubmit(submitData)
+         }>
         <Grid container >
             <HeadText text='Add Event'/>
             <TextField
@@ -127,6 +129,7 @@ export default function AddEvent(props){
                 type='date'
                 label="Event Date"
                 fullWidth
+    style={{'margin':'.9rem 0'}}
                 InputLabelProps={{className:'light-text'}}
                 {...register("startDate")}
             />
@@ -135,14 +138,13 @@ export default function AddEvent(props){
                 type='time'
                 label="Event Time"
                 fullWidth
+    style={{'margin':'.9rem 0'}}
+
                 InputLabelProps={{className:'light-text'}}
                 {...register("startTime")}
             />
 
 
-<br/>
-<br/>
-<br/>
            
 <SelectWithExternalLogic
   name="is_paid_event" 
@@ -169,6 +171,8 @@ export default function AddEvent(props){
                 variant='standard'
                 // type='time'
                 label="Amount"
+    style={{'margin':'.9rem 0'}}
+
                 fullWidth
                 InputLabelProps={{className:'light-text'}}
                 required={true}
@@ -183,7 +187,7 @@ export default function AddEvent(props){
   Label="Event for which User Type"
   options={[
       {name:"Exco",value:"is_for_excos"},
-      {name:"Commitee",value:"is_commitee"},
+    //   {name:"Commitee",value:"is_commitee"},
       {name:"All Members",value:"is_all"},
   ]}
   customFunc={(currentValue)=>{
@@ -213,6 +217,7 @@ export default function AddEvent(props){
     // type='time'
     label="Commitee name"
     fullWidth
+    style={{'margin':'.9rem 0'}}
     InputLabelProps={{className:'light-text'}}
     {...register("commitee_name")}
 />:""
@@ -225,18 +230,12 @@ export default function AddEvent(props){
                 label="Address"
                 fullWidth
                 InputLabelProps={{className:'light-text'}}
+                {...register('address')}
             />
 
 
-            
+<br />            
             <Grid container>
-               <Grid item>
-                    <Typography>
-                        <Checkbox title="re_occuring" {...register("re_occuring")}/>
-                        Recurrent
-                    </Typography>
-                </Grid>
-
                 <Grid item>
                     <Typography>
                         <Checkbox title="is_virtual" {...register("is_virtual")}/>
@@ -246,10 +245,11 @@ export default function AddEvent(props){
 
                 <Grid item>
                     <Typography>
-                        <Checkbox title="for_chapters" {...register("for_chapters")}/>
-                        is chapters
+                        <Checkbox title="is_active" {...register("is_active")}/>
+                        is Activate
                     </Typography>
                 </Grid>
+
             </Grid>
             
             
@@ -310,11 +310,11 @@ option={[
             
 
             
-<MarkoBtn text={"Hello Submit"}></MarkoBtn>
+{/* <MarkoBtn text={"Hello Submit"}></MarkoBtn> */}
             
             
             <Grid md={12} mt={1} container justifyContent='space-around'>
-                <GreenButton text={status==="loading"?"Creating":'Save'} textColor='#fff' paddingY={1} radius={3} bg='#203719' paddingX={7} />
+<GreenButton click={handleSubmit(submitData)} text={status==="loading"?"Creating":'Save'} textColor='#fff' paddingY={1} radius={3} bg='#203719' paddingX={7} />
                 <GreenButton text='Cancel' textColor='#203719' paddingY={1} radius={3} bg='#E1F1DC' paddingX={7} click={()=>props.handleClose()} />
             </Grid>
             

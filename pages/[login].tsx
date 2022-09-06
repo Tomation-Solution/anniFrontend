@@ -46,7 +46,6 @@ const Login =  () =>{
     
     
     const submitData:SubmitHandler<LoginType>= (data)=>{
-        console.log(console.log({data}))
 
         dispatch(signinApi(data))
     }
