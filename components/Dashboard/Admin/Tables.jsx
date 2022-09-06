@@ -11,6 +11,11 @@ import { Close, DeleteForeverRounded,Delete,Edit} from '@mui/icons-material';
 import Image from 'next/image';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CancelIcon from '@mui/icons-material/Cancel';
+import {useState} from 'react'
+import BasicModal from "../../Modals";
+import GreenButton from "../../Buttonn";
+import ChangeEventStatus from '../../Modal.jsx/events/ChangeStatus';
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -331,6 +336,10 @@ export function StateEventTable(props) {
 }
 
 export function AllEventTable(props) {
+  console.log({'events':props.rows})
+  const [OpeneditEvent,setOpenEditEvent] = useState(false)
+  const [CurrenteventID,setCurrentEventID] =useState()
+  const handleClose = (e)=> setOpenEditEvent(false)
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -346,6 +355,7 @@ export function AllEventTable(props) {
                 {index+1}
               </StyledTableCell>
               {/* <StyledTableCell className='light-text' >{row.post}</StyledTableCell> */}
+              {/* <StyledTableCell className='light-text' >{row.name}</StyledTableCell> */}
               <StyledTableCell className='light-text' >{row.name}</StyledTableCell>
               <StyledTableCell className='light-text' >{row.startDate}</StyledTableCell>
               <StyledTableCell className='light-text' >{(()=>{
@@ -362,21 +372,28 @@ export function AllEventTable(props) {
                 return val
               })()}</StyledTableCell>
               <StyledTableCell className='light-text' >{row.is_paid_event?"Paid":"Free"}</StyledTableCell>
-              <StyledTableCell className='light-text' >{"At my house dudes"}</StyledTableCell>
+              <StyledTableCell className='light-text' >{row.event_access.link}</StyledTableCell>
+              <StyledTableCell className='light-text' >{row.is_active?'true':'false'}</StyledTableCell>
               <StyledTableCell className='light-text' >
 
               <Grid container justifyContent='space-between' > <Edit 
-              // onClick={()=>setOpenEditMember(true)} 
+              onClick={()=>{
+                setCurrentEventID(row.id)
+                setOpenEditEvent(true)}} 
               sx={{color:'#365C2A'}}/> 
-                      <Delete 
+                      {/* <Delete 
                       // onClick={()=>setOpenDeleteMember(true)} 
-                      sx={{color:'red'}}/> 
+                      sx={{color:'red'}}/>  */}
                       </Grid>
               </StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
       </Table>
+      <BasicModal handleClose={handleClose} open={OpeneditEvent} body={
+      <ChangeEventStatus  event_id={CurrenteventID}/>
+      }/>
+
     </TableContainer>
   );
 }

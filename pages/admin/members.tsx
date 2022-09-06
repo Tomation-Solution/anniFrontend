@@ -20,13 +20,30 @@ import { selectMembers } from "../../redux/admin/members/membersSlice";
 import {selectDashboard} from "../../redux/admin/dashboard/dashboardSlice";
 import {getDashboardApi} from "../../redux/admin/dashboard/dashboardApi";
 import {getMembersApi} from "../../redux/admin/members/membersApi"
-
+import {TypeVerifierUserChecker} from '../../hooks/UserScreenAuthentication'
+import CustomDrawer from '../../components/Drawer/Drawer'
+import UploadSecondLevelDb from "../../components/Modal.jsx/UploadSecondLevelDb";
 export default function Members(){
-
+    const [openUploadSecondDB,setOpenUploadSecondDB] = useState(false)
     const [value, setValue] = useState(0);
     const [subcomm, setSubcom] = useState('');
     const [excoFields,setExcoFields] = useState( ['NameS', 'PortFolio', 'Email', 'Phone','Course of study', 'Period of study'])
     const [memberFields,setMemberFields] = useState( ['NameS','Email', 'Phone','Address', 'Occupation','Course of study', 'Period of study','Actions'])
+    const [open, setOpen] = useState(false);
+    const [openEditMember, setOpenEditMember] = useState(false);
+    const [openDeleteMember, setOpenDeleteMember] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleOpenDelete = () => setOpenDeleteMember(true);
+    const handleClose = () => setOpen(false);
+    const handleClose1 = () => setOpenEditMember(false);
+    const handleCloseDelete = () => setOpenDeleteMember(false);
+
+    const {status,data:adminCardDashboardData,error} = useAppSelector(selectDashboard)
+    const {
+        status:memebers_api_status,data:members_data,error:members_err } = useAppSelector(selectMembers);
+    const dispatch =  useAppDispatch();
+
+
     function createData(name, email, phone, address, occupation,course, period, action) {
         return { name, email, phone, address, occupation,course, period, action };
       }
@@ -69,20 +86,7 @@ export default function Members(){
           'aria-controls': `simple-tabpanel-${index}`,
         };
       }
-
-      const [open, setOpen] = useState(false);
-      const [openEditMember, setOpenEditMember] = useState(false);
-      const [openDeleteMember, setOpenDeleteMember] = useState(false);
-      const handleOpen = () => setOpen(true);
-      const handleOpenDelete = () => setOpenDeleteMember(true);
-      const handleClose = () => setOpen(false);
-      const handleClose1 = () => setOpenEditMember(false);
-      const handleCloseDelete = () => setOpenDeleteMember(false);
-
-      const {status,data:adminCardDashboardData,error} = useAppSelector(selectDashboard)
-      const {
-          status:memebers_api_status,data:members_data,error:members_err } = useAppSelector(selectMembers);
-      const dispatch =  useAppDispatch();
+    //   function handleU
 
 
       useEffect(()=>{
@@ -104,8 +108,7 @@ export default function Members(){
         setRows(members_data[0].members)
     }
   },[members_data])
-
-
+  
     return (
         <DashboardLayout>
         {status ==="loading"?<Spinner />:''}
@@ -114,9 +117,13 @@ export default function Members(){
             <BasicModal handleClose={handleClose} open={open} body={<AddPorfolio handleClose={handleClose} />}/>
             <BasicModal handleClose={handleClose1} open={openEditMember} body={<EditMembers handleClose={handleClose1} body='hello' />}/>
             <BasicModal handleClose={handleCloseDelete} open={openDeleteMember} body={<DeleteMembers handleClose={handleCloseDelete} body='hello' />}/>
+            <BasicModal 
+            handleClose={()=>setOpenUploadSecondDB(false)} 
+            open={openUploadSecondDB} 
+            body={<UploadSecondLevelDb/>}/>
             <Grid>    
                 <Tabs value={value} onChange={handleChange} >
-                    <Tab  {...a11yProps(0)} label="All Members" className='text' sx={{textTransform:'capitalize'}} >Hell</Tab>
+                    <Tab  {...a11yProps(0)} label="All Members" className='text' sx={{textTransform:'capitalize'}} />
                     <Tab  {...a11yProps(1)} label="Exco Members" className='text' sx={{textTransform:'capitalize'}} />
                     <Tab  {...a11yProps(2)} label="Commitee Members" className='text' sx={{textTransform:'capitalize'}} />
                     <Tab  {...a11yProps(3)} label="Sub Commitee Members" className='text' sx={{textTransform:'capitalize'}} />
@@ -126,11 +133,11 @@ export default function Members(){
                        <Grid item md={7} sx={{borderRadius:'5px'}} py={1} px={2} className='light-grey-bg'>
                             <TextField
                                 variant='standard'
-                                size='large'
+                                size='medium'
                                 placeholder='Search'
                                 sx={{width:'100%',  borderBottom:'none'}}
                                 InputProps={{disableUnderline:true}}
-                                onChange={()=>setSubcom(event.target.value)}
+                                onChange={(event)=>setSubcom(event.target.value)}
                             />        
                         </Grid> 
                         <Grid item alignContent='center' sx={{borderRadius:'5px'}} py={1} px={2} mx={1} className='dark-green-bg'>
@@ -140,7 +147,7 @@ export default function Members(){
                             <Typography className='white-text'  textAlign='center' sx={{color:'white'}}>Add New</Typography>
                         </Grid> */}
 
-                        <GreenButton 
+                        {/* <GreenButton 
                         text='Add New'
                         bg='#365C2A'
                         radius={5}
@@ -148,17 +155,30 @@ export default function Members(){
                         paddingX={5}
                         paddingY={1.5}
                         fontWeight={500}
-                        />
+                        /> */}
 
-                        <GreenButton 
-                        text='Batch Upload'
-                        bg='#365C2A'
-                        radius={5}
-                        textColor='white'
-                        paddingX={5}
-                        paddingY={1.5}
-                        fontWeight={500}
-                        />
+                        {
+                            TypeVerifierUserChecker(['super_admin'])?//i only want super admin to upload database
+                            <GreenButton 
+                            text='Add New'
+                            bg='#365C2A'
+                            radius={5}
+                            textColor='white'
+                            paddingX={5}
+                            paddingY={1.5}
+                            fontWeight={500}
+                            click={(e)=>{
+                                console.log('hello world')
+                                setOpenUploadSecondDB(true)
+                            }}
+                            />:''
+                        }
+                         {/* <CustomDrawer 
+                            isOpen={openUploadSecondDB}
+                            setIsOpen={setOpenUploadSecondDB}
+                        >
+                            <h1>Upload Members</h1>
+                        </CustomDrawer> */}
                         {/* <Grid item alignContent='center' sx={{borderRadius:'5px'}} py={1} px={2} mx={1} className='dark-green-bg'>
                             <Typography className='white-text'  textAlign='center' sx={{color:'white'}}>upload Multiple</Typography>
                         </Grid> */}
@@ -172,11 +192,11 @@ export default function Members(){
                        <Grid item md={7} sx={{borderRadius:'5px'}} py={1} px={2} className='light-grey-bg'>
                             <TextField
                                 variant='standard'
-                                size='large'
+                                size='medium'
                                 placeholder='Search'
                                 sx={{width:'100%',  borderBottom:'none'}}
                                 InputProps={{disableUnderline:true}}
-                                onChange={()=>setSubcom(event.target.value)}
+                                onChange={(event)=>setSubcom(event.target.value)}
                             />
 
                             
@@ -212,11 +232,11 @@ export default function Members(){
                        <Grid item md={7} sx={{borderRadius:'5px'}} py={1} px={2} className='light-grey-bg'>
                             <TextField
                                 variant='standard'
-                                size='large'
+                                size='medium'
                                 placeholder='Search'
                                 sx={{width:'100%',  borderBottom:'none'}}
                                 InputProps={{disableUnderline:true}}
-                                onChange={()=>setSubcom(event.target.value)}
+                                onChange={(event)=>setSubcom(event.target.value)}
                             />
 
                             
@@ -245,12 +265,12 @@ export default function Members(){
                        <Grid item md={7} sx={{borderRadius:'5px'}} py={1} px={2} className='light-grey-bg'>
                             <TextField
                                 variant='standard'
-                                size='large'
+                                size='medium'
                                 placeholder='Search'
                                 sx={{width:'100%',  borderBottom:'none'}}
                                 InputProps={{disableUnderline:true}}
                                 value={subcomm}
-                                onChange={()=>setSubcom(event.target.value)}
+                                onChange={(event)=>setSubcom(event.target.value)}
                             />       
                         </Grid> 
                         <Grid item alignContent='center' sx={{borderRadius:'5px'}} py={1} px={2} mx={1} className='dark-green-bg'>

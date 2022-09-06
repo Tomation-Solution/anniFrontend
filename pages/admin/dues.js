@@ -115,7 +115,6 @@ export default function Dues(){
       
 
       console.log(data)
-      console.log({"tecca":data[0].list_of_owing_members})
     return (
         <DashboardLayout>
             {status ==="loading"?<Spinner />:''}
@@ -184,7 +183,7 @@ export default function Dues(){
                                 placeholder='Search'
                                 sx={{width:'100%',  borderBottom:'none'}}
                                 InputProps={{disableUnderline:true}}
-                                onChange={()=>setSubcom(event.target.value)}
+                                onChange={(event)=>setSubcom(event.target.value)}
                             />        
                         </Grid> 
                         <Grid item alignContent='center' sx={{borderRadius:'5px'}} py={1} px={2} mx={1} className='dark-green-bg'>
@@ -240,11 +239,13 @@ export default function Dues(){
                         fontWeight={500}
                         /> */}
                         
-                    </Grid><br/>
-                    <OwingTable
-                     tableHead={owingFields}
-                     rows={data[0].list_of_owing_members}
-                     />
+                    </Grid><br/>{
+                      data?
+                      <OwingTable
+                       tableHead={owingFields}
+                       rows={data[0].list_of_owing_members}
+                       />:''
+                    }
 
                 </TabPanel>
             </Grid>
