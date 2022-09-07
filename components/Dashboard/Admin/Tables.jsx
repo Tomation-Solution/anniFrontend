@@ -479,7 +479,10 @@ export function GalleryTable(props) {
                 {row.sn}
               </StyledTableCell>
               {/* <StyledTableCell className='light-text' >{row.post}</StyledTableCell> */}
-              <StyledTableCell className='light-text' ><Image src={row.image} height={'50px'} width={'50px'}/> </StyledTableCell>
+              <StyledTableCell className='light-text' >
+                {/* <Image src={row.image} height={'50px'} width={'50px'}/> */}
+                <img src={row.image} height={'50px'} width={'50px'}/>
+               </StyledTableCell>
               <StyledTableCell className='light-text' >{row.title}</StyledTableCell>
               <StyledTableCell className='light-text' >{row.action}</StyledTableCell>
             </StyledTableRow>

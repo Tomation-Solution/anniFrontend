@@ -11,7 +11,11 @@ import GalleryImage from '../../images/shortBanner.png'
 import DeleteGallery from "../../components/Modal.jsx/Gallery/DeleteGallery";
 import EditGallery from "../../components/Modal.jsx/Gallery/EditGallery";
 import AddGallery from "../../components/Modal.jsx/Gallery/AddGallery";
-
+import { selectGallery } from "../../redux/gallery/gallerySlice";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { getGallery } from "../../redux/gallery/galleryApi";
+import { useEffect } from "react";
+import Spinner from "../../components/Spinner";
 
 
 export default function Gallery(){
@@ -22,16 +26,13 @@ export default function Gallery(){
     function createData(sn,image, title, action) {
         return {sn, image, title, action };
       }
+      const dispatch = useAppDispatch()
+    const {status,data,error} =useAppSelector(selectGallery);
       
-      const rows = [
-        createData(1,GalleryImage, '2022 Alumni Get Together Party', <Grid container justifyContent='space-evenly' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
-        createData(2,GalleryImage, '2022 Alumni Get Together Party', <Grid container justifyContent='space-evenly' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
-        createData(3,GalleryImage, '2022 Alumni Get Together Party2022 ', <Grid container justifyContent='space-evenly'> <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
-        createData(4,GalleryImage, '2022 Alumni Get Together Party', <Grid container justifyContent='space-evenly' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
-        createData(5,GalleryImage, '2022 Alumni Get Together Party', <Grid container justifyContent='space-evenly' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
-        createData(6,GalleryImage, '2022 Alumni Get Together Party', <Grid container justifyContent='space-evenly' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ),
-        
-      ];
+      const rows = data.map((resp,index:number)=>createData
+      (index+1,resp.photo_file, resp.name, <Grid container justifyContent='space-evenly' >
+         <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ))
+      
       
 
      const handleChange = (event, newValue) => {
@@ -79,8 +80,12 @@ export default function Gallery(){
       const handleClose1 = () => setOpenEditMember(false);
       const handleCloseDelete = () => setOpenDeleteMember(false);
 
+      useEffect(()=>{
+        dispatch(getGallery())
+      },[])
     return (
         <DashboardLayout>
+          {status==='loading'&&<Spinner/>}
             <BasicModal handleClose={handleClose} open={open} body={<AddGallery handleClose={handleClose} />}/>
             <BasicModal handleClose={handleClose1} open={openEditMember} body={<EditGallery handleClose={handleClose1} body='hello' />}/>
             <BasicModal handleClose={handleCloseDelete} open={openDeleteMember} body={<DeleteGallery handleClose={handleCloseDelete} body='hello' />}/>
@@ -90,11 +95,11 @@ export default function Gallery(){
                        <Grid item md={7} sx={{borderRadius:'5px'}} py={1} px={2} className='light-grey-bg'>
                             <TextField
                                 variant='standard'
-                                size='large'
+                                size='medium'
                                 placeholder='Search'
                                 sx={{width:'100%',  borderBottom:'none'}}
                                 InputProps={{disableUnderline:true}}
-                                onChange={()=>setSubcom(event.target.value)}
+                                // onChange={()=>setSubcom(event.target.value)}
                             />        
 
                             

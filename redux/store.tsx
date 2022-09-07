@@ -8,6 +8,7 @@ import dueListAndOwningMembersReducer from './dueListAndOwningMembers/dueListAnd
 import eventReducer from './events/eventSlice';
 import newsSlice from './news/newsSlice'
 import publicationSlice from './publication/publicationSlice';
+import gallerySlice from './gallery/gallerySlice';
 export const store = configureStore({
   reducer: {
     // signUp:signUpReducer,
@@ -18,7 +19,8 @@ export const store = configureStore({
     dueListAndOwningMembers:dueListAndOwningMembersReducer,
     events:eventReducer,
     news:newsSlice,
-    publication:publicationSlice
+    publication:publicationSlice,
+    gallery:gallerySlice,
   },
 })
 
