@@ -443,16 +443,16 @@ export function NewsTable(props) {
         </TableHead>
         <TableBody className='text'>
           {props.rows.map((row) => (
-            <StyledTableRow key={row.name}>
+            <StyledTableRow key={row.title}>
               <StyledTableCell className='light-text' component="th" scope="row">
                 {row.sn}
               </StyledTableCell>
-              {/* <StyledTableCell className='light-text' >{row.post}</StyledTableCell> */}
               <StyledTableCell className='light-text' >{row.title}</StyledTableCell>
-              <StyledTableCell className='light-text' >{row.content}</StyledTableCell>
               <StyledTableCell className='light-text' >{row.date}</StyledTableCell>
-              {/* <StyledTableCell className='light-text' >{row.address}</StyledTableCell> */}
               <StyledTableCell className='light-text' >{row.Reader}</StyledTableCell>
+              <StyledTableCell className='light-text' >{row.likes}</StyledTableCell>
+              {/* <StyledTableCell className='light-text' >{row.address}</StyledTableCell> */}
+              <StyledTableCell className='light-text' >{row.dislikes}</StyledTableCell>
               <StyledTableCell className='light-text' >{row.action}</StyledTableCell>
             </StyledTableRow>
           ))}
