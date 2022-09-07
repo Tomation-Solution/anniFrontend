@@ -140,7 +140,38 @@ export const NavItem = (props) => {
         </NextLink>
 
 
-        <NextLink href='/admin/archive' passHref>
+        <NextLink href='/admin/publication' passHref>
+        <Button
+            component="a"
+            // startIcon={icon}
+            disableRipple
+            sx={{ backgroundColor: router.pathname=='/admin/publication' && '#E1F1DC', borderRadius: 1,
+              color: router.pathname=='/admin/publication' ? '#2B4A21' : 'white',
+              fontWeight: '300',
+              fontSize:13,
+              justifyContent: 'flex-start',
+              px: 3,
+              ml:5,
+              py:0.5,
+              textAlign: 'left',
+              textTransform: 'none',
+              width: '100%',
+              '& .MuiButton-startIcon': {
+                color: active ? '#2B4A21' : 'neutral.400'
+              },
+              '&:hover': {
+                backgroundColor: 'rgba(255,255,255, 0.08)'
+              }
+            }}
+          >
+            <Box sx={{ flexGrow: 1 }}>
+              Publications
+            </Box>
+          </Button>
+        </NextLink>
+
+
+        {/* <NextLink href='/admin/archive' passHref>
           <Button
             component="a"
             // startIcon={icon}
@@ -159,7 +190,7 @@ export const NavItem = (props) => {
               Archive
             </Box>
           </Button>
-        </NextLink>
+        </NextLink> */}
 
         <NextLink href='/admin/gallery' passHref>
           <Button
