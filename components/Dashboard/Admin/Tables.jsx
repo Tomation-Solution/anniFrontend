@@ -447,13 +447,14 @@ export function NewsTable(props) {
               <StyledTableCell className='light-text' component="th" scope="row">
                 {row.sn}
               </StyledTableCell>
-              <StyledTableCell className='light-text' >{row.title}</StyledTableCell>
-              <StyledTableCell className='light-text' >{row.date}</StyledTableCell>
-              <StyledTableCell className='light-text' >{row.Reader}</StyledTableCell>
-              <StyledTableCell className='light-text' >{row.likes}</StyledTableCell>
-              {/* <StyledTableCell className='light-text' >{row.address}</StyledTableCell> */}
+              <StyledTableCell className='light-text' >{row.name}</StyledTableCell>
+              <StyledTableCell className='light-text' >{row.about}</StyledTableCell>
+              <StyledTableCell className='light-text' >{row.can_upload_min}</StyledTableCell>
+              <StyledTableCell className='light-text' >{row.member}</StyledTableCell>
+              {/* <StyledTableCell className='light-text' >{row.address}</StyledTableCell>
               <StyledTableCell className='light-text' >{row.dislikes}</StyledTableCell>
-              <StyledTableCell className='light-text' >{row.action}</StyledTableCell>
+              */}
+               <StyledTableCell className='light-text' >{row.action}</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>

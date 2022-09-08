@@ -9,6 +9,7 @@ import eventReducer from './events/eventSlice';
 import newsSlice from './news/newsSlice'
 import publicationSlice from './publication/publicationSlice';
 import gallerySlice from './gallery/gallerySlice';
+import ManageAssigningExcoSlice from './ManageAssigningExco/ManageAssigningExcoSlice';
 export const store = configureStore({
   reducer: {
     // signUp:signUpReducer,
@@ -21,6 +22,7 @@ export const store = configureStore({
     news:newsSlice,
     publication:publicationSlice,
     gallery:gallerySlice,
+    manage_assigning_exco:ManageAssigningExcoSlice,
   },
 })
 
