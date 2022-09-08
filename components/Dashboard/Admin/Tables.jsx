@@ -15,6 +15,9 @@ import {useState} from 'react'
 import BasicModal from "../../Modals";
 import GreenButton from "../../Buttonn";
 import ChangeEventStatus from '../../Modal.jsx/events/ChangeStatus';
+import { useAppDispatch } from '../../../redux/hooks';
+import { deleteEventApi } from '../../../redux/events/eventsApi';
+import { deleteDueApi } from '../../../redux/due/dueApi';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -111,26 +114,44 @@ export function MemberTable(props) {
         <TableBody className='text'>
           {props.rows.filter(data=>{
             // props.forExco==true && data.exco_info !== undefined|null
-            let showexco =true;
-            if(props.forExco==true){
-              if(data?.exco_info !== undefined|null){
-                showexco =true
+            if(props.forExco){
 
-              }else{showexco=false}
+              return data.more_info.exco_info.length !==0
+            }else{
+              return true
             }
-
-          return showexco
           }).map((row) => (
-            <StyledTableRow key={row.user__email}>
+            <StyledTableRow key={row.sn}>
               <StyledTableCell className='light-text' component="th" scope="row">
-                {row.user__email}
+                {row.sn}
               </StyledTableCell>
-              {/* <StyledTableCell className='light-text' >{row.post}</StyledTableCell> */}
-              <StyledTableCell className='light-text' >{row.user__chapter__name?row.user__chapter__name:'Does Not Belong To One Yet'}</StyledTableCell>
-              <StyledTableCell className='light-text' >{row.is_financial?<CheckBoxIcon style={{'color':"green"}}/>:
+              <StyledTableCell className='light-text' >{row.email}</StyledTableCell>
+              <StyledTableCell className='light-text' >{row.financial?<CheckBoxIcon style={{'color':"green"}}/>:
               <CancelIcon style={{'color':"red"}}/>}</StyledTableCell>
+                            <StyledTableCell className='light-text' >{row.is_active?<CheckBoxIcon style={{'color':"green"}}/>:
+              <CancelIcon style={{'color':"red"}}/>}</StyledTableCell>
+
+<StyledTableCell className='light-text' component="th" scope="row">
+                {row.amount_owing}
+              </StyledTableCell>
          
-              {row?.memeber_info?
+
+         {
+          props.forExco&&row.more_info.exco_info.length !==0?
+          <StyledTableCell className='light-text' component="th" scope="row">
+                {row.more_info.exco_info[0].name}
+              </StyledTableCell>:''
+         }
+
+{
+          props.forExco&&row.more_info.exco_info.length !==0?
+          <StyledTableCell className='light-text' component="th" scope="row">
+                {row.more_info.exco_info[0].can_upload_min?<CheckBoxIcon style={{'color':"green"}}/>:
+              <CancelIcon style={{'color':"red"}}/>}
+              </StyledTableCell>:''
+         }
+
+              {/* {row?.memeber_info?
               
               row.memeber_info.map(e=>{
 
@@ -139,17 +160,9 @@ return (
   <StyledTableCell className='light-text' key={e.name}>{e.value}</StyledTableCell>
 
 )
-              }):""}
+              }):""} */}
 
-        {
-          props.forExco?
-          <>
-  <StyledTableCell className='light-text' key={row?.exco_info[0].name}>{row?.exco_info[0].name}</StyledTableCell>
-  <StyledTableCell className='light-text' key={row?.exco_info[0].can_upload_min}>{row?.exco_info[0].can_upload_min?<CheckBoxIcon style={{'color':"green"}}/>:
-              <CancelIcon style={{'color':"red"}}/>}</StyledTableCell>
-            
-          </>:""
-        }      
+        
               {/* <StyledTableCell className='light-text' >{row.occupation}</StyledTableCell>
               <StyledTableCell className='light-text' >{row.course}</StyledTableCell>
               <StyledTableCell className='light-text' >{row.period}</StyledTableCell>
@@ -164,6 +177,7 @@ return (
 
 
 export function DuesTable(props) {
+  const dispatch  = useAppDispatch();
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -186,12 +200,19 @@ export function DuesTable(props) {
                 {index+1}
               </StyledTableCell>
               {/* <StyledTableCell className='light-text' >{row.post}</StyledTableCell> */}
-              <StyledTableCell className='light-text' >{row.Name}</StyledTableCell>
+              <StyledTableCell className='light-text' >{row.name?row.name:row.Name}</StyledTableCell>
               <StyledTableCell className='light-text' >{row.startDate}</StyledTableCell>
               <StyledTableCell className='light-text' >{row.startTime}</StyledTableCell>
               <StyledTableCell className='light-text' >{row.re_occuring?"True":"False"}</StyledTableCell>
               <StyledTableCell className='light-text' >{row.is_for_excos?"True":"False"}</StyledTableCell>
               <StyledTableCell className='light-text' >{row.amount}</StyledTableCell>
+              <StyledTableCell className='light-text'>
+                <Delete onClick={()=>{
+                  if(window.confirm('Are You Sure you want to delete')){
+                    dispatch(deleteDueApi(row.id))
+                  }
+                }} sx={{color:'red'}}/> 
+              </StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
@@ -225,7 +246,7 @@ export function OwingTable(props) {
                 {index+1}
               </StyledTableCell>
               {/* <StyledTableCell className='light-text' >{row.post}</StyledTableCell> */}
-              <StyledTableCell className='light-text' >{row.user__email}</StyledTableCell>
+              <StyledTableCell className='light-text' >{row.email}</StyledTableCell>
               <StyledTableCell className='light-text' >{row.is_exco?
               
               <CheckBoxIcon style={{'color':"green"}}/>:
@@ -336,10 +357,10 @@ export function StateEventTable(props) {
 }
 
 export function AllEventTable(props) {
-  console.log({'events':props.rows})
   const [OpeneditEvent,setOpenEditEvent] = useState(false)
   const [CurrenteventID,setCurrentEventID] =useState()
   const handleClose = (e)=> setOpenEditEvent(false)
+  const dispatch = useAppDispatch()
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -381,9 +402,13 @@ export function AllEventTable(props) {
                 setCurrentEventID(row.id)
                 setOpenEditEvent(true)}} 
               sx={{color:'#365C2A'}}/> 
-                      {/* <Delete 
-                      // onClick={()=>setOpenDeleteMember(true)} 
-                      sx={{color:'red'}}/>  */}
+                      <Delete 
+                      onClick={()=>{
+                       if( window.confirm('Are you sure you want to delete')){
+                        dispatch(deleteEventApi(row.id))
+                       }
+                      }} 
+                      sx={{color:'red'}}/> 
                       </Grid>
               </StyledTableCell>
             </StyledTableRow>
@@ -443,14 +468,15 @@ export function NewsTable(props) {
         </TableHead>
         <TableBody className='text'>
           {props.rows.map((row) => (
-            <StyledTableRow key={row.title}>
+            <StyledTableRow key={row.sn}>
               <StyledTableCell className='light-text' component="th" scope="row">
                 {row.sn}
               </StyledTableCell>
-              <StyledTableCell className='light-text' >{row.name}</StyledTableCell>
-              <StyledTableCell className='light-text' >{row.about}</StyledTableCell>
-              <StyledTableCell className='light-text' >{row.can_upload_min}</StyledTableCell>
-              <StyledTableCell className='light-text' >{row.member}</StyledTableCell>
+              <StyledTableCell className='light-text' >{row.title}</StyledTableCell>
+              <StyledTableCell className='light-text' >{row.date}</StyledTableCell>
+              <StyledTableCell className='light-text' >{row.Reader}</StyledTableCell>
+              <StyledTableCell className='light-text' >{row.likes}</StyledTableCell>
+              <StyledTableCell className='light-text' >{row.dislikes}</StyledTableCell>
               {/* <StyledTableCell className='light-text' >{row.address}</StyledTableCell>
               <StyledTableCell className='light-text' >{row.dislikes}</StyledTableCell>
               */}

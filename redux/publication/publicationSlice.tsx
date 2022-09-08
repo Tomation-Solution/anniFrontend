@@ -1,6 +1,6 @@
 import { createSlice,PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { createPublication, getPublication } from "./publicationApi";
+import { createPublication, deletePublication, getPublication } from "./publicationApi";
 
 
 export type PublicationType = {
@@ -21,7 +21,7 @@ export type PublicationType = {
 } 
 
 type initialStateType= {
-    status: "idle" | "loading"|"created" | "succeeded" | "failed"|"created";
+    status: "idle" | "loading"|"created" | "succeeded" | "failed"|"created"|'deleted';
     error: any;
     data: null|PublicationType[]
 }
@@ -63,8 +63,13 @@ const publication  = createSlice({
     addCase(createPublication.rejected,(state,action)=>{
         state.status = 'failed'
     })
-
-
+    addCase(deletePublication.pending,(state,{payload}:PayloadAction<number>)=>{
+        state.status='loading';
+    })
+    addCase(deletePublication.fulfilled,(state,{payload}:PayloadAction<number>)=>{
+        state.status='deleted';
+        state.data = state.data.filter(data=>data.id !== payload)
+    })
 
     }
 

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {EventType,creatEventsApi,setEventStateToIdle,getEventsApi2} from "./eventsApi"
+import {EventType,creatEventsApi,setEventStateToIdle,getEventsApi2, deleteEventApi} from "./eventsApi"
 import { RootState } from "../store";
 
 
@@ -7,7 +7,7 @@ import { RootState } from "../store";
 
 
 interface initialStateType{
-    status: "idle" | "loading"|"created" | "succeeded" | "failed"|"created";
+    status: "idle" | "loading"|"created" | "succeeded" | "failed"|"created"|'deleted';
     isLoggedIn: boolean;
     error: any;
     data: null | EventType[]
@@ -82,16 +82,11 @@ const events = createSlice({
         })
 
 
-        builder.addCase(creatEventsApi.fulfilled,(state,{payload})=>{
+        builder.addCase(creatEventsApi.fulfilled,(state,{payload}:PayloadAction<EventType>)=>{
             state.status ="created";
 
-            if(state.data){
 
-                state.data = [payload[0],...state.data,];
-            }
-            else{
-                state.data =payload;
-            }
+            state.data = [payload,...state.data,];
             console.log({"createSuccess Events":payload})
             
         })
@@ -100,6 +95,19 @@ const events = createSlice({
             state.status="failed";
             state.error=payload
             //add the reuturn data to redux cylce
+        })
+
+
+        // delete event 
+        builder.addCase(deleteEventApi.pending,(state,action)=>{
+            //
+            state.status='loading'
+        })
+
+        builder.addCase(deleteEventApi.fulfilled,(state,{payload}:PayloadAction<number>)=>{
+            //
+            state.status='deleted'
+            state.data = state.data.filter(data=>data.id!==payload)
         })
     }
 })

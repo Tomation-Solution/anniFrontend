@@ -15,6 +15,7 @@ import MultipleSelect from "../../forms/multiSelectCheckBox";
 import {useAppDispatch,useAppSelector,} from "../../../redux/hooks"
 import MarkoBtn from "../../MarkoBtn"
 import useToast from "../../../hooks/useToast"
+import Spinner from "../../Spinner";
 
 // schedule only happens if it re-occuring
 
@@ -104,7 +105,7 @@ export default function AddEvent(props){
     }
     useEffect(()=>{
         if(status==="created"){
-            notify("Event Was Created Successfull");
+            notify("Event Was Created Successfull",'success');
             dispatch(setEventStateToIdle())
         }
     },[status])
@@ -113,6 +114,8 @@ export default function AddEvent(props){
         <form
          onSubmit={handleSubmit(submitData)
          }>
+                    {status==='loading'&&<Spinner/>}
+
         <Grid container >
             <HeadText text='Add Event'/>
             <TextField

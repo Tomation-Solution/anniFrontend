@@ -9,20 +9,20 @@ import PropTypes  from "prop-types";
 import {CustomizedTables, MemberTable} from "../../components/Dashboard/Admin/Tables";
 import {isLoggedIn} from "../../helpers/auth.helper";
 import {getDashboardApi} from "../../redux/admin/dashboard/dashboardApi";
-import {getMembersApi} from "../../redux/admin/members/membersApi"
-import { selectMembers } from "../../redux/admin/members/membersSlice";
 import {selectDashboard} from "../../redux/admin/dashboard/dashboardSlice";
 import {useAppSelector,useAppDispatch} from "../../redux/hooks";
 import AddDue from "../../components/Modal.jsx/Dues/AddDue";
 import BasicModal from "../../components/Modals";
 
 import Spinner from "../../components/Spinner"
+import { selectMemberAndExco } from "../../redux/members/membersSlice";
+import { getMembersAndExco } from "../../redux/members/membersApi";
 const Home=() =>{
     
     const [value, setValue] = useState(0);
-    const [excoFields,setExcoFields] = useState( ['NameS', 'PortFolio', 'Email', 'Phone','Course of study', 'Period of study'])
-    const [memberFields,setMemberFields] = useState( ['NameS','Email', 'Phone','Address', 'Occupation','Course of study', 'Period of study','Actions'])
-    const [rows,setRows] = useState([]);
+    const excoFields  =  ['S/N','Email','financial','is active',  'amount_owing']
+    const memberFields = excoFields
+ 
     const  [open,setOpen] = useState(false)
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -30,18 +30,19 @@ const Home=() =>{
     
     const router = useRouter();
     const {status,data:adminCardDashboardData,error} = useAppSelector(selectDashboard)
-    const {
-        status:memebers_api_status,data:members_data,error:members_err } = useAppSelector(selectMembers);
+    const {status:member_and_exco_status,data,} = useAppSelector(selectMemberAndExco);
+
     const dispatch =  useAppDispatch()
     // console.log(user)
     const formatMembersData = (member)=>{
 
         
     }
-    function createData(name, email, phone, address, occupation,course, period, action) {
-        return { name, email, phone, address, occupation,course, period, action };
+    function createData(sn:number, email:string, financial:boolean, is_active:boolean, amount_owing:string,more_info:any) {
+        return { sn, email, financial, is_active, amount_owing,more_info };
       }
       
+      let rows = data.map((resp,index:number)=>createData(index+1,resp.email,resp.is_financial,resp.is_active,resp.amount_owing,resp))
       
 
      const handleChange = (event, newValue) => {
@@ -86,27 +87,18 @@ const Home=() =>{
 
             dispatch(getDashboardApi())
 
-            dispatch(getMembersApi())
+            dispatch(getMembersAndExco({get_excos:false}))
 
       },[])
 
-      useEffect(()=>{
-        //  
-        if(members_data){
-            //this means get  all the extra info of the members but here i just took the first memebers extra info hopefullly other members would use same info but if not we would have do it
-            const newArrayList = ['email','chapter name','financial',...members_data[0].members[0].memeber_info.map((data)=>data.name)].map(item=>item[0].toLocaleUpperCase()+item.substr(1))
-            console.log(newArrayList)
-            setMemberFields(newArrayList)
-            setRows(members_data[0].members)
-        }
-      },[members_data])
+     
     return (
         
         <DashboardLayout>
             <BasicModal handleClose={handleClose} open={open} body={<AddDue handleClose={handleClose} />}/>
 
             {status ==="loading"?<Spinner />:''}
-            {memebers_api_status ==="loading"?<Spinner />:''}
+            {/* {memebers_api_status ==="loading"?<Spinner />:''} */}
 
             <Grid>
                 <Grid container justifyContent='space-around'>
@@ -115,7 +107,7 @@ const Home=() =>{
                             <Grid item md={5} my={1}>
                                 <StatCard
                                     header={adminCardDashboardData?.num_of_members }
-                                    icon={<PeopleRounded sx={{color:'#E76137'}} fontSize="16"/>}
+                                    icon={<PeopleRounded sx={{color:'#E76137'}} />}
                                     iconBg='#FFC5B2'
                                     hasBg={true}
                                     body='Total Members'
@@ -126,7 +118,7 @@ const Home=() =>{
                                 <StatCard
                                 header={adminCardDashboardData?.event_count }
 
-                                    icon={<EventAvailable sx={{color:'#00B4EC'}} fontSize="16"/>}
+                                    icon={<EventAvailable sx={{color:'#00B4EC'}} />}
                                     iconBg='#A9E7FA'
                                     hasBg={true}
                                     body='All Events'
@@ -136,7 +128,7 @@ const Home=() =>{
                             <Grid item md={5} my={1}>
                                 <StatCard
                                 header={adminCardDashboardData?.exco_member }
-                                    icon={<PersonPinRounded sx={{color:'#00B4EC'}} fontSize="16"/>}
+                                    icon={<PersonPinRounded sx={{color:'#00B4EC'}}/>}
                                     iconBg='#BBFFF3'
                                     hasBg={true}
                                     body='Exco Members'
@@ -146,7 +138,7 @@ const Home=() =>{
                             <Grid item md={5} my={1}>
                                 <StatCard
                                     header='0' 
-                                    icon={<PersonPinRounded sx={{color:'#E76137'}} fontSize="16"/>}
+                                    icon={<PersonPinRounded sx={{color:'#E76137'}} />}
                                     iconBg='#FFD7B2'
                                     hasBg={true}
                                     body='Commitee Members'
@@ -189,7 +181,7 @@ const Home=() =>{
                     value={value}
                     onChange={handleChange}
                 >
-                    <Tab  {...a11yProps(0)} label="Members" className='text' sx={{textTransform:'capitalize'}} >Hell</Tab>
+                    <Tab  {...a11yProps(0)} label="Members" className='text' sx={{textTransform:'capitalize'}} ></Tab>
                     <Tab  {...a11yProps(1)} label="Exco Members" className='text' sx={{textTransform:'capitalize'}} />
                     {/* <Tab value="three" label="Commitee Members" className='text' sx={{textTransform:'capitalize'}} />
                     <Tab value="four" label="Sub-Commitee Members" className='text' sx={{textTransform:'capitalize'}} /> */}

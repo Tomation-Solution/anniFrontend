@@ -13,7 +13,7 @@ import GreenButton from "../../components/Buttonn";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import Spinner from "../../components/Spinner";
 import { PublicationType, selectPublication } from "../../redux/publication/publicationSlice";
-import { getPublication } from "../../redux/publication/publicationApi";
+import { deletePublication, getPublication } from "../../redux/publication/publicationApi";
 import AddPublication from "../../components/Modal.jsx/Publications/AddPublication";
 
 
@@ -47,7 +47,13 @@ export default function News(){
     const rows = data.map((resp_data,index:number)=>{
         return (
             createData(index+1,resp_data.name,getIntendedReader(resp_data),"12/22/33",resp_data.likes?resp_data.likes:0,resp_data.dislikes?resp_data.dislikes:0,
-            <Grid container justifyContent='space-between' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'green'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> )
+            <Grid container justifyContent='space-between' > 
+            {/* <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'green'}}/>  */}
+            <Delete onClick={()=>{
+                if(window.confirm('Are Sure You Wanna Delet')){
+                    dispatch(deletePublication(resp_data.id))
+                }
+            }} sx={{color:'red'}}/> </Grid> )
         )
     })
 

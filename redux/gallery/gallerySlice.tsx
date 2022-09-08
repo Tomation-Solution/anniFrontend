@@ -1,6 +1,6 @@
 import { createSlice ,PayloadAction} from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { createGallery, GalleryType, getGallery } from "./galleryApi";
+import { createGallery, deleteGallery, GalleryType, getGallery } from "./galleryApi";
 
 
 type  initialStateType = {
@@ -57,7 +57,17 @@ const gallery = createSlice({
         })
 
 
+        addCase(deleteGallery.pending,(state,action)=>{
+            state.status='loading';
+        })
+        addCase(deleteGallery.fulfilled,(state,{payload}:PayloadAction<number>)=>{
+            state.status='succeeded';
+            state.data = state.data.filter(data=>data.id!==payload)
+        })
         
+        addCase(deleteGallery.rejected,(state,action)=>{
+            state.status='failed';
+        })
     }
 }) 
 

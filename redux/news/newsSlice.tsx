@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from "../store";
-import { createNews, getNews } from './newsApi';
+import { createNews, deleteNews, getNews } from './newsApi';
 
 
 
@@ -21,7 +21,7 @@ export type NewsType = {
     "user_that_have_reacted": any[]
 } 
 type initialStateType= {
-    status: "idle" | "loading"|"created" | "succeeded" | "failed"|"created";
+    status: "idle" | "loading"|"created" | "succeeded" | "failed"|"created"|'deleted';
     error: any;
     data: null|NewsType[]
 }
@@ -62,6 +62,16 @@ const news = createSlice({
         })
         addCase(createNews.rejected,(state,action)=>{
             state.status = 'failed'
+        })
+
+
+        addCase(deleteNews.pending,(state,action)=>{
+            state.status='loading'
+        })
+
+        addCase(deleteNews.fulfilled,(state,{payload}:PayloadAction<number>)=>{
+            state.status='deleted'
+            state.data = state.data.filter(data=>data.id !== payload)
         })
     }
 })

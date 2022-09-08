@@ -128,9 +128,9 @@ export default function Events(){
             <Grid>    
                 <Tabs value={value} onChange={handleChange} >
                     <Tab  {...a11yProps(0)} label="All Events" className='text' sx={{textTransform:'capitalize'}}/>
-                    <Tab  {...a11yProps(3)} label="National Events" className='text' sx={{textTransform:'capitalize'}} />
-                    <Tab  {...a11yProps(1)} label="State Events" className='text' sx={{textTransform:'capitalize'}} />
-                    <Tab  {...a11yProps(2)} label="Member Events" className='text' sx={{textTransform:'capitalize'}} />
+                    {/* <Tab  {...a11yProps(3)} label="National Events" className='text' sx={{textTransform:'capitalize'}} /> */}
+                    {/* <Tab  {...a11yProps(1)} label="State Events" className='text' sx={{textTransform:'capitalize'}} /> */}
+                    {/* <Tab  {...a11yProps(2)} label="Member Events" className='text' sx={{textTransform:'capitalize'}} /> */}
                 </Tabs>
                 <TabPanel value={value} index={0}>
                     <Grid container my={2} py={1} className='rounded-corners' px={2}>

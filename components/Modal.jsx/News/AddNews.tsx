@@ -12,6 +12,7 @@ import {createNews, newsCreateType} from '../../../redux/news/newsApi';
 import useToast from "../../../hooks/useToast";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { selectNews } from "../../../redux/news/newsSlice";
+import Spinner from "../../Spinner";
     
 const schema = yup.object().shape({
     name:yup.string().required(),
@@ -86,7 +87,7 @@ export default function AddNews(props){
   <form  >
                 <Grid container >
                     <HeadText text='Add News'/>
-                    
+                    {status==='loading'&&<Spinner/>}
 
                     <TextField
                         variant='standard'

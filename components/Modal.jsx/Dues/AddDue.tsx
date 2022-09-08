@@ -15,6 +15,7 @@ import {useAppDispatch,useAppSelector} from "../../../redux/hooks";
 import { selectDue } from "../../../redux/due/dueSlice";
 import { createDueApi,getDueApi2 } from "../../../redux/due/dueApi";
 import useToast from "../../../hooks/useToast"
+import Spinner from "../../Spinner";
 const schema = yup.object().shape({
    name:yup.string().required(),
    re_occuring:yup.boolean().required(),
@@ -76,7 +77,10 @@ export default function AddDue(props){
     return (
         <Grid container >
             <HeadText text='Add Due'/>
-            <form onSubmit={handleSubmit(submitData)}>
+            <form
+            //  onSubmit={}
+            >
+                {status==='loading'&&<Spinner/>}
             <TextField
                 variant='standard'
                 label="Due Name"
@@ -202,11 +206,13 @@ option={[
 
 
 
-               <MarkoBtn text={"Hello Submit"}></MarkoBtn>
+               {/* <MarkoBtn text={"Hello Submit"}></MarkoBtn> */}
                </form>
             <Grid md={12} mt={1} container justifyContent='space-around'>
                 
-                <GreenButton t text='Save' textColor='#fff' paddingY={1} radius={3} bg='#203719' paddingX={7} />
+                <GreenButton t text={status==='loading'?'Creating':'Save'}
+                click={handleSubmit(submitData)}
+                textColor='#fff' paddingY={1} radius={3} bg='#203719' paddingX={7} />
                 <GreenButton text='Cancel' textColor='#203719' paddingY={1} radius={3} bg='#E1F1DC' paddingX={7} click={()=>props.handleClose()} />
             </Grid>
         </Grid>

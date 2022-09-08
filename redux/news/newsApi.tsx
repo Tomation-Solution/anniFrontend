@@ -53,3 +53,17 @@ export const getNews = createAsyncThunk(
         }  
     }
 )
+
+export const deleteNews = createAsyncThunk(
+    'news/deleteNews',async (id:number)=>{
+        try {
+            const resp = await axios.delete(`/tenant/news/newsview/${id}/`,)
+            console.log({resp})
+            return id as number
+        } catch (error:any) {
+            console.log({error})            
+            return error.reponse.data
+        }
+
+    }
+)

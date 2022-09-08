@@ -4,9 +4,13 @@ import { RootState } from "../store";
 
 
 interface OwingMember{
-    "user__email": string;
-    "is_exco": boolean;
-    "amount_owing": number;
+   id?:number;
+   user?:number;
+   email:string;
+   amount_owing:string;
+   is_exco:boolean;
+   is_financial:boolean;
+
 }
 interface AnotherDueType{
     "Name": string;
@@ -31,14 +35,14 @@ interface DueListAndOwningMembersApiType {
 interface initialStateType{
     status: "idle" | "loading" | "succeeded" | "failed";
     error: any;
-    data: null | DueListAndOwningMembersApiType[]
+    data: OwingMember[]
 }
 
 
 const initialState={
     status:"idle",
     error:null,
-    data:null,
+    data:[],
 } as initialStateType
 
 

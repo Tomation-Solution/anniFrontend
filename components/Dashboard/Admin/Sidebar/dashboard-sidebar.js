@@ -16,11 +16,11 @@ const items = [
     icon: (<DashboardCustomize fontSize="small" />),
     title: 'Dashboard'
   },
-  {
-    href: '/admin/members',
-    icon: (<PeopleRounded fontSize="small" />),
-    title: 'Members'
-  },
+  // {
+  //   href: '/admin/members',
+  //   icon: (<PeopleRounded fontSize="small" />),
+  //   title: 'Members'
+  // },
 
   {
     href: '/admin/events',

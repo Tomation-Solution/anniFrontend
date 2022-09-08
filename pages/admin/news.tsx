@@ -12,7 +12,7 @@ import DeleteNews from "../../components/Modal.jsx/News/DeleteNews";
 import GreenButton from "../../components/Buttonn";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { NewsType, selectNews } from "../../redux/news/newsSlice";
-import { getNews } from "../../redux/news/newsApi";
+import { deleteNews, getNews } from "../../redux/news/newsApi";
 import Spinner from "../../components/Spinner";
 
 
@@ -45,11 +45,18 @@ export default function News(){
     }
     const rows = data.map((resp_data,index:number)=>{
         return (
-            createData(index+1,resp_data.name,getIntendedReader(resp_data),"12/22/33",resp_data.likes?resp_data.likes:0,resp_data.dislikes?resp_data.dislikes:0,
-            <Grid container justifyContent='space-between' > <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'green'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> )
+            createData(index+1,resp_data.name,getIntendedReader(resp_data),"...",resp_data.likes?resp_data.likes:0,resp_data.dislikes?resp_data.dislikes:0,
+            <Grid container justifyContent='space-between' >
+         {/* <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'green'}}/> */}
+          <Delete onClick={()=>{
+            if(window.confirm('Are you sure u wanna delete')){
+                dispatch(deleteNews(resp_data.id))
+
+            }
+          }} sx={{color:'red'}}/> </Grid> )
         )
     })
-
+    
      const handleChange = (event, newValue) => {
         setValue(newValue);
     };

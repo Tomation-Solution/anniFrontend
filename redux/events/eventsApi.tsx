@@ -29,9 +29,8 @@ export const creatEventsApi = createAsyncThunk(
 
        try {
         const resp = await axios.post('/tenant/event/eventview/',data)
-        let testingData  = resp.data.data
-        // console.log({data})
-        return resp.data.data
+        console.log({resp})
+        return resp.data.data as EventType
        } catch (err:any) {
            console.log({err})
         return thunkApi.rejectWithValue(err.response.data)
@@ -68,3 +67,17 @@ export const getEventsApi2 = createAsyncThunk(
 
 
 })
+
+export const deleteEventApi = createAsyncThunk(
+    'events/deleteEventApi', async (event_id:number,thunkApi)=>{
+
+
+        try {
+            const resp =await axios.delete(`/tenant/event/eventview/${event_id}`)
+            console.log({'delete resp':resp})
+            return event_id
+        } catch (error) {
+            return error.response.data
+        }
+    }
+)

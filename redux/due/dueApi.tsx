@@ -29,4 +29,34 @@ export const createDueApi = createAsyncThunk(
     })
 
 
-export const getDueApi = null;
+    export const deleteDueApi = createAsyncThunk(
+        "due/deleteDueApi",
+        async(id:number)=>{
+    
+    
+            try{
+                const resp = await axios.delete(`/tenant/dues/AdminManageDue/${id}/`)
+                console.log({resp})
+                return id as number
+             }
+             catch(err:any){
+                return err.response.data
+             }
+        }
+    )
+
+
+    export const getDueApi = createAsyncThunk(
+        "due/getDueApi",
+        async()=>{
+    
+            try{
+                const resp = await axios.get(`/tenant/dues/AdminManageDue/`)
+                console.log({resp})
+                return resp.data.data
+             }
+             catch(err:any){
+                return err.response.data
+             }
+        }
+    )

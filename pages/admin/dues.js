@@ -98,6 +98,7 @@ export default function Dues(){
       useEffect(()=>{
         dispatch(dueListAndOwningMembersGetApi())
         dispatch(getDashboardApi())
+        dispatch(getDueApi())
 
 
       },[])
@@ -152,7 +153,7 @@ export default function Dues(){
 
                             <Grid item md={3} my={1}>
                                 <StatCard
-                                    header={data?data[0].list_of_owing_members.length:"0"}
+                                    header={data?data.length:"0"}
                                     icon={<PersonPinRounded sx={{color:'#00B4EC'}} fontSize="16"/>}
                                     iconBg='#BBFFF3'
                                     hasBg={true}
@@ -208,7 +209,7 @@ export default function Dues(){
                     {/* <CustomizedTables tableHead={excoFields} rows={rows}/> */}
                     {/* <HeadText text='Dues'/><br/> */}
                     {/* <MemberTable tableHead={memberFields} rows={rows}/> */}
-                    <DuesTable tableHead={dueFields} rows={data?data[0].dues:[]}/>
+                    <DuesTable tableHead={dueFields} rows={DueData}/>
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                 <Grid container my={2} py={1} className='rounded-corners' px={2}>
@@ -243,7 +244,7 @@ export default function Dues(){
                       data?
                       <OwingTable
                        tableHead={owingFields}
-                       rows={data[0].list_of_owing_members}
+                       rows={data}
                        />:''
                     }
 

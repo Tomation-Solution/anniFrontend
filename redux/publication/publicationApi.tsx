@@ -43,11 +43,24 @@ export const getPublication = createAsyncThunk(
     'publication/getPublication', async()=>{
         try {
             const resp = await axios.get(`/tenant/publication/publicationview/`,)
-
+            console.log({resp})
             return resp.data.data as PublicationType[]
         } catch (error:any) {
             console.log({error})            
             return error.reponse.data
         }  
+    }
+)
+export const deletePublication = createAsyncThunk(
+    'publication/deletePublication',async(id:number)=>{
+        //
+        try{
+            const resp = await axios.delete(`/tenant/publication/publicationview/${id}/`);
+            console.log({resp})
+            return id as number;
+        }
+        catch(err:any){
+            return err.response.data
+        }
     }
 )

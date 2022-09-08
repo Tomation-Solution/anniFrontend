@@ -30,7 +30,7 @@ interface DashboardDataSliceType{
     status: "idle" | "loading" | "succeeded" | "failed";
     isLoggedIn: boolean;
     error: any;
-    data: null | dashbordDataType[]|dashbordDataType
+    data: any
 }
 
 const initialState={

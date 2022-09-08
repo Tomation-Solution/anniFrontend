@@ -13,7 +13,7 @@ import EditGallery from "../../components/Modal.jsx/Gallery/EditGallery";
 import AddGallery from "../../components/Modal.jsx/Gallery/AddGallery";
 import { selectGallery } from "../../redux/gallery/gallerySlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { getGallery } from "../../redux/gallery/galleryApi";
+import { deleteGallery, getGallery } from "../../redux/gallery/galleryApi";
 import { useEffect } from "react";
 import Spinner from "../../components/Spinner";
 
@@ -31,7 +31,12 @@ export default function Gallery(){
       
       const rows = data.map((resp,index:number)=>createData
       (index+1,resp.photo_file, resp.name, <Grid container justifyContent='space-evenly' >
-         <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> <Delete onClick={()=>setOpenDeleteMember(true)} sx={{color:'red'}}/> </Grid> ))
+         {/* <Edit onClick={()=>setOpenEditMember(true)} sx={{color:'#365C2A'}}/> */}
+         <Delete onClick={()=>{
+          if(window.confirm('Are You Sure You want to delete this file')){
+            dispatch(deleteGallery(resp.id))
+          }
+          }} sx={{color:'red'}}/> </Grid> ))
       
       
 

@@ -48,3 +48,15 @@ export const getGallery = createAsyncThunk(
         }
     }
 )
+
+export const deleteGallery = createAsyncThunk(
+    'gallery/deleteGallery', async (id:number,thunkApi)=>{
+        try{
+            const resp =  await axios.delete(`/tenant/extras/galleryview/${id}/`)
+            console.log({resp})
+            return id as number
+        }catch(err:any){
+            return err.response.data
+        }
+    }
+)

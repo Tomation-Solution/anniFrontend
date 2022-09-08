@@ -1,24 +1,24 @@
-import {createSlice} from "@reduxjs/toolkit";
-import {createDueApi} from "./dueApi";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createDueApi, deleteDueApi, getDueApi} from "./dueApi";
 import { RootState } from "../store";
 
 // import RootS
 
-interface dueStateType{
-    "id": null| number;
-    "name": string;
-    "re_occuring": boolean;
-    "is_for_excos": boolean;
-    amount:string;
-    startDate:string;
-    startTime:string;
-    scheduletype: "day_of_week"|"month_of_year ";
-    schedule:string[];
-
+interface dueStateType    {
+    "Name":string,
+    "re_occuring": boolean,
+    "is_for_excos": boolean,
+    "amount":string,
+    "startDate":string,
+    "startTime": string,
+    "endDate": null |string,
+    "scheduletype": string,
+    "schedule":string[],
+    "chapter": null|number,
+    "id"?: number
 }
-
 interface initialStateType{
-    status: "idle" | "loading" | "succeeded" | "failed";
+    status: "idle" | "loading" | "succeeded" | "failed"|'deleted';
     isLoggedIn: boolean;
     error: any;
     data: null | dueStateType[]
@@ -28,8 +28,7 @@ const initialState ={
     status:"idle",
     isLoggedIn:false,
     error:null,
-    data:null
-
+    data:[]
 }  as initialStateType
 
 
@@ -43,7 +42,7 @@ const due = createSlice({
             state.status="loading";
         })
 
-        builder.addCase(createDueApi.fulfilled,(state,{payload})=>{
+        builder.addCase(createDueApi.fulfilled,(state,{payload}:PayloadAction<dueStateType[]>)=>{
             state.status="succeeded";
             if(state.data){
 
@@ -61,6 +60,27 @@ const due = createSlice({
             state.status="failed";
             state.error=payload
             //add the reuturn data to redux cylce
+        })
+
+        builder.addCase(deleteDueApi.pending,(state,action)=>{
+            state.status='loading'
+        })
+
+        builder.addCase(deleteDueApi.fulfilled,(state,{payload}:PayloadAction<number>)=>{
+            state.status='deleted'
+            state.data = state.data.filter(data=>data.id!==payload)
+        })
+
+        builder.addCase(getDueApi.pending,(state,action)=>{
+            state.status='loading';
+
+        })
+        builder.addCase(getDueApi.fulfilled,(state,{payload}:PayloadAction<dueStateType[]>)=>{
+            state.status='succeeded';
+            state.data=payload
+        })
+        builder.addCase(getDueApi.rejected,(state,action)=>{
+            state.status='failed';
         })
     }
 })
