@@ -13,7 +13,7 @@ import {CreateDUeType} from "../../../redux/due/dueApi";
 import SelectWithLabel from "../../forms/SelectWithLable";
 import {useAppDispatch,useAppSelector} from "../../../redux/hooks";
 import { selectDue } from "../../../redux/due/dueSlice";
-import { createDueApi,getDueApi2 } from "../../../redux/due/dueApi";
+import { createDueApi,getDueApi } from "../../../redux/due/dueApi";
 import useToast from "../../../hooks/useToast"
 import Spinner from "../../Spinner";
 const schema = yup.object().shape({
@@ -70,7 +70,7 @@ export default function AddDue(props){
     useEffect(()=>{
         if(status==="created"){
             notify("Due Was Created Successfull");
-            dispatch(getDueApi2())
+            dispatch(getDueApi())
         }
 
     },[status])
