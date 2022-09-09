@@ -184,12 +184,12 @@ export default function Navbar(){
                                 </Typography>
                         </Link>
                        
-                            <Typography id="demo-positioned-menu" onClick={handleClickResource }  className='text nav-link' variant="body2" component="div" sx={{ flexGrow: 1 }}>
+                            {/* <Typography id="demo-positioned-menu" onClick={handleClickResource }  className='text nav-link' variant="body2" component="div" sx={{ flexGrow: 1 }}>
                                 <Grid container>   
                                     Resources
                                 <ArrowDropDown />
                                 </Grid>
-                            </Typography>
+                            </Typography> */}
                             <Menu
                             id="basic-menu"
                             anchorEl={anchorElR}
@@ -215,12 +215,12 @@ export default function Navbar(){
                         
                         
                         
-                                <Typography onClick={handleClick}   className='text nav-link' variant="body2" component="div" sx={{ flexGrow: 1 }}>
+                                {/* <Typography onClick={handleClick}   className='text nav-link' variant="body2" component="div" sx={{ flexGrow: 1 }}>
                                     <Grid  container>
                                     Meet Our People
                                     <ArrowDropDown />
                                     </Grid>
-                              </Typography>
+                              </Typography> */}
                               
                               <Menu
                                 id="basic-menu"
