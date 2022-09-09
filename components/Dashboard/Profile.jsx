@@ -1,6 +1,6 @@
 import { Divider, Grid, Typography } from "@mui/material"
 import Image from "next/image"
-import ProfileImage from '../../images/IMG-20190508-WA0001 1 (1).png'
+import ProfileImage from '../../images/logo.png'
 import HeadText from "./DashboardHead"
 
 export default function Profile (props){

@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material"
 import ExcoCard from "../components/ExcoCard"
 import HeadText from "../components/Dashboard/DashboardHead"
-import  ImageCard from "../images/IMG-20190508-WA0001 1 (1).png"
+import  ImageCard from "../images/logo.png"
 import { DashboardLayout } from "../components/Dashboard/Member/Sidebar/dashboard-layout"
 
 

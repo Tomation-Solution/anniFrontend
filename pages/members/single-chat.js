@@ -3,7 +3,7 @@ import { AddToPhotos, SendRounded } from "@mui/icons-material";
 import { Grid, Typography, IconButton, TextField, InputAdornment, Icon } from "@mui/material";
 import GreenButton from "../../components/Buttonn";
 import Image from "next/image";
-import ChatImage from '../../images/IMG-20190508-WA0001 1 (1).png'
+import ChatImage from '../../images/logo.png'
 import ChatCard from "../../components/ChatCard";
 import { DashboardLayout } from "../../components/Dashboard/Member/Sidebar/dashboard-layout";
 import Router from "next/router";
