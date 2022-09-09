@@ -18,5 +18,5 @@ const signUp = createSlice({
 
 
 export const {} = signUp.actions;
-export const selectSignup=(state:RootState)=>state.signUp;
+// export const selectSignup=(state:RootState)=>state.signUp;
 export default signUp.reducer;
