@@ -97,7 +97,7 @@ export function MemberTable(props) {
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            {props.tableHead ? props.tableHead.map((e)=><StyledTableCell >{e}</StyledTableCell>):''}
+            {props.tableHead ? props.tableHead.map((e,index)=><StyledTableCell key={index} >{e}</StyledTableCell>):''}
           
 
 {
@@ -183,7 +183,7 @@ export function DuesTable(props) {
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            {props.tableHead ? props.tableHead.map((e)=><StyledTableCell>{e}</StyledTableCell>):''}
+            {props.tableHead ? props.tableHead.map((e,index)=><StyledTableCell key={index}>{e}</StyledTableCell>):''}
             {/* <StyledTableCell >Name</StyledTableCell> */}
             {/* <StyledTableCell align="right">Portfolio</StyledTableCell>
             <StyledTableCell align="right">Email&nbsp;</StyledTableCell>
@@ -229,7 +229,7 @@ export function OwingTable(props) {
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            {props.tableHead ? props.tableHead.map((e)=><StyledTableCell>{e}</StyledTableCell>):''}
+            {props.tableHead ? props.tableHead.map((e,index)=><StyledTableCell key={index}>{e}</StyledTableCell>):''}
             {/* <StyledTableCell >Name</StyledTableCell> */}
             {/* <StyledTableCell align="right">Portfolio</StyledTableCell>
             <StyledTableCell align="right">Email&nbsp;</StyledTableCell>
@@ -271,7 +271,7 @@ export function NationalEventTable(props) {
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            {props.tableHead ? props.tableHead.map((e)=><StyledTableCell>{e}</StyledTableCell>):''}
+            {props.tableHead ? props.tableHead.map((e,index)=><StyledTableCell key={index}>{e}</StyledTableCell>):''}
           </TableRow>
         </TableHead>
         <TableBody className='text'>
@@ -302,7 +302,7 @@ export function MemberEventTable(props) {
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            {props.tableHead ? props.tableHead.map((e)=><StyledTableCell>{e}</StyledTableCell>):''}
+            {props.tableHead ? props.tableHead.map((e,index)=><StyledTableCell key={index}>{e}</StyledTableCell>):''}
           </TableRow>
         </TableHead>
         <TableBody className='text'>
@@ -332,7 +332,7 @@ export function StateEventTable(props) {
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            {props.tableHead ? props.tableHead.map((e)=><StyledTableCell>{e}</StyledTableCell>):''}
+            {props.tableHead ? props.tableHead.map((e,index)=><StyledTableCell key={index}>{e}</StyledTableCell>):''}
           </TableRow>
         </TableHead>
         <TableBody className='text'>
@@ -366,7 +366,7 @@ export function AllEventTable(props) {
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            {props.tableHead ? props.tableHead.map((e)=><StyledTableCell>{e}</StyledTableCell>):''}
+            {props.tableHead ? props.tableHead.map((e,index)=><StyledTableCell key={index}>{e}</StyledTableCell>):''}
           </TableRow>
         </TableHead>
         <TableBody className='text'>
@@ -430,7 +430,7 @@ export function ArchiveTable(props) {
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            {props.tableHead ? props.tableHead.map((e)=><StyledTableCell>{e}</StyledTableCell>):''}
+            {props.tableHead ? props.tableHead.map((e,index)=><StyledTableCell key={index}>{e}</StyledTableCell>):''}
           </TableRow>
         </TableHead>
         <TableBody className='text'>
@@ -463,7 +463,7 @@ export function NewsTable(props) {
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            {props.tableHead ? props.tableHead.map((e)=><StyledTableCell>{e}</StyledTableCell>):''}
+            {props.tableHead ? props.tableHead.map((e,index)=><StyledTableCell key={index}>{e}</StyledTableCell>):''}
           </TableRow>
         </TableHead>
         <TableBody className='text'>
@@ -496,7 +496,7 @@ export function GalleryTable(props) {
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            {props.tableHead ? props.tableHead.map((e)=><StyledTableCell>{e}</StyledTableCell>):''}
+            {props.tableHead ? props.tableHead.map((e,index)=><StyledTableCell key={index}>{e}</StyledTableCell>):''}
           </TableRow>
         </TableHead>
         <TableBody className='text'>

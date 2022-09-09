@@ -16,7 +16,7 @@ export default function DeleteDue(props){
             </Typography>
 
             <Typography py={2} mx={1} variant='caption' xs={{margin:'0 auto'}} textAlign='center' className='light-text'>
-               Note: You can't retriieve deleted items
+               Note: You {"can't"} retriieve deleted items
             </Typography>
             
 

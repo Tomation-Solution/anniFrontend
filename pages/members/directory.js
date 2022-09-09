@@ -65,8 +65,8 @@ export default function Directory(){
                             <TableCell><b>Period of Study</b></TableCell>
                         </TableHead>
                         <TableBody>
-                            { members ? members.map((e)=>
-                            <TableRow >
+                            { members ? members.map((e,index)=>
+                            <TableRow key={index}>
                                 <TableCell className='light-text'>{e.id}</TableCell>
                                 <TableCell className='light-text'>{e.name}</TableCell>
                                 <TableCell className='light-text'>{e.email}</TableCell>

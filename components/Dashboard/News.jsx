@@ -12,7 +12,7 @@ export default function News(props){
                     Feb 15th, 2022 - 10:33 
                </Typography>
                <Grid container justifyContent='space-around'>
-                <Grid item  md={3}  paddingLeft={2}  className='rounded-corners' item>
+                <Grid item  md={3}  paddingLeft={2}  className='rounded-corners' >
                   <Image src={NewImage} height='700px'  className='rounded-corners' />
                 </Grid>
 

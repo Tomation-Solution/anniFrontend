@@ -218,15 +218,15 @@ export default function AppDrawer () {
                 <ListItemIcon>
                   {/* {index % 2 === 0 ? <InboxIcon className='drawerIcon'  /> 
                   : <MailIcon className='drawerIcon'/>} */}
-                  {[<DashboardRounded className={index==selected? 'selectedNav':'drawerIcon'}  />, 
-                  <AccountBalanceWalletRounded className={index==selected? 'selectedNav':'drawerIcon'}  />,
-                  <Person className={index==selected? 'selectedNav':'drawerIcon'}  />, 
-                  <PeopleRounded className={index==selected? 'selectedNav':'drawerIcon'}  />,
-                  <ChatBubble className={index==selected? 'selectedNav':'drawerIcon'}  />,
-                  <Info className={index==selected? 'selectedNav':'drawerIcon'}  />,
-                  <MenuBook className={index==selected? 'selectedNav':'drawerIcon'} />,
-                  <Photo className={index==selected? 'selectedNav':'drawerIcon'}/>,
-                  <LogoutRounded className={index==selected? 'selectedNav':'drawerIcon'}/>][index]}
+                  {[<DashboardRounded className={index==selected? 'selectedNav':'drawerIcon'} key={index} />, 
+                  <AccountBalanceWalletRounded className={index==selected? 'selectedNav':'drawerIcon'} key={index} />,
+                  <Person className={index==selected? 'selectedNav':'drawerIcon'}  key={index}/>, 
+                  <PeopleRounded className={index==selected? 'selectedNav':'drawerIcon'}  key={index}/>,
+                  <ChatBubble className={index==selected? 'selectedNav':'drawerIcon'}  key={index} />,
+                  <Info className={index==selected? 'selectedNav':'drawerIcon'}   key={index}/>,
+                  <MenuBook className={index==selected? 'selectedNav':'drawerIcon'}  key={index}/>,
+                  <Photo className={index==selected? 'selectedNav':'drawerIcon'} key ={index}/>,
+                  <LogoutRounded className={index==selected? 'selectedNav':'drawerIcon'} key={index}/>][index]}
                   {/* <NavLink href="/search" className="nav-item nav-link">Users</NavLink>, */}
 
                 </ListItemIcon>

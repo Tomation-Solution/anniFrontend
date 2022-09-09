@@ -73,7 +73,7 @@ const Login =  () =>{
             {/* <center><Image src={Logo}/></center> */}
             <br/>
             
-            <Grid item md={12} className={styles.card} md={5} sm={10}  style={{margin:'0 auto'}} >
+            <Grid item md={12} className={styles.card} sm={10}  style={{margin:'0 auto'}} >
                 <Typography className='text' textAlign='center' marginBottom={2} fontWeight='bolder' >USER LOGIN</Typography>
                <Typography className='text' fontWeight='normal' textAlign='center' marginBottom={2} variant='subtitle2' color='InactiveCaption'>
                Click here to login into your Dashboard </Typography>
@@ -89,7 +89,7 @@ const Login =  () =>{
                     InputProps={{
                     
                         startAdornment:(
-                            <Person color='disabled'  fontSize='13'/>
+                            <Person color='disabled'  fontSize={'medium'}/>
                         )
                     }}
                     {...register("email")}
@@ -119,7 +119,7 @@ const Login =  () =>{
                           </IconButton>
                         ),
                         startAdornment: (
-                             <Lock color='disabled' marginRight={6} fontSize='13' /> 
+                             <Lock color='disabled'  fontSize={'medium'} /> 
                               )
                         
                         
