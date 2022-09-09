@@ -16,7 +16,7 @@ import ListItemText from '@mui/material/ListItemText';
 import List from '@mui/material/List';
 import styles from '../../styles/Home.module.css'
 import Image from 'next/image';
-import Logo from "../../images/ANNI-Logo1 1.png"
+import Logo from "../../images/logo.png"
 import { AccountBalanceWalletRounded, DashboardRounded, Logout, ArrowBack,
   LogoutRounded, Modal,Person, Dialog, DialogActions , DialogContent, 
   DialogContentText , DialogTitle , PeopleRounded, ChatBubble, Info, 

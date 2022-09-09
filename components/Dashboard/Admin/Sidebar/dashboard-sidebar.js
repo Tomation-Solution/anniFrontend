@@ -8,7 +8,7 @@ import { NavItem } from './nav-item';
 import { Person, DashboardCustomize, PeopleRounded, PersonPinRounded, 
   SettingsSuggest, AccountBalanceWalletRounded, Info, LogoutRounded, EventRounded  } from '@mui/icons-material';
 import Image from 'next/image';
-import LogoImage from '../../../../images/ANNI-Logo1 1.png'
+import LogoImage from '../../../../images/logo.png'
 
 const items = [
   {

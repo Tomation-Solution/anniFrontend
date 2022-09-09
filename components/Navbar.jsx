@@ -2,7 +2,7 @@ import {AppBar,Typography,Box, Container, Button, Drawer, Toolbar, Grid, IconBut
 import styles from '../styles/Home.module.css'
 import Link from 'next/link'
 import Image from 'next/image'
-import Logo from '../images/ANNI-Logo1 1.png'
+import Logo from '../images/logo.png'
 import {useState, useEffect} from 'react'
 import Popover from '@mui/material/Popover';
 import Menu from '@mui/material/Menu';
@@ -124,12 +124,12 @@ export default function Navbar(){
                                 <MenuItem onClick={handleClose}>Newsletter</MenuItem>     
                             </Menu>
                                 
-                            <Typography textAlign='center' onClick={handleClick}   className='text nav-link' variant="body2" component="div" sx={{ flexGrow: 1}}>
+                            {/* <Typography textAlign='center' onClick={handleClick}   className='text nav-link' variant="body2" component="div" sx={{ flexGrow: 1}}>
                                 <Grid className='text' justifyContent='center'  container>
                                     Meet Our People
                                     <ArrowDropDown />
                                 </Grid>
-                              </Typography>
+                              </Typography> */}
                               
                               <Menu
                                 id="basic-menu"
