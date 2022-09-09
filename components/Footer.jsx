@@ -67,7 +67,7 @@ export default function Footer (){
                         Social Media
                 </Typography>
 
-              <Link href="https://www.twitter.com" underline="always">
+              <Link href="" underline="always" passHref>
                 <Grid container className='nav-link'>
                   <Twitter/> 
                   <Typography textAlign={{xs:'center', sm:'left',lg:'left', md:'left'}}  className='text'   variant='body2' marginBottom={2}> 
@@ -77,7 +77,7 @@ export default function Footer (){
               </Link>
 
 
-              <Link  href="https://www.linkedin.com" underline="always">
+              <Link  href="https://www.linkedin.com" underline="always" passHref>
                 <Grid container  className='nav-link' >
                   <LinkedIn marginTop={2} />
                   <Typography textAlign={{xs:'center', sm:'left',lg:'left', md:'left'}} className='text ' variant='body2' marginBottom={2}>
@@ -85,7 +85,7 @@ export default function Footer (){
                 </Grid>
               </Link>
 
-              <Link href="https://www.facebook.com" underline="always">
+              <Link href="https://www.facebook.com" underline="always" passHref>
                 <Grid container className='nav-link'>
                   <Facebook marginTop={2}/>
                   <Typography textAlign={{xs:'center', sm:'left',lg:'left', md:'left'}} className='text' variant='body2' marginBottom={2}>

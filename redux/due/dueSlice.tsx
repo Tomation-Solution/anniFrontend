@@ -18,7 +18,7 @@ interface dueStateType    {
     "id"?: number
 }
 interface initialStateType{
-    status: "idle" | "loading" | "succeeded" | "failed"|'deleted';
+    status: "idle" | "loading" | "succeeded" | "failed"|'deleted'|'created';
     isLoggedIn: boolean;
     error: any;
     data: null | dueStateType[]
@@ -43,7 +43,7 @@ const due = createSlice({
         })
 
         builder.addCase(createDueApi.fulfilled,(state,{payload}:PayloadAction<dueStateType[]>)=>{
-            state.status="succeeded";
+            state.status="created";
             if(state.data){
 
                 state.data = [payload[0],...state.data,]
