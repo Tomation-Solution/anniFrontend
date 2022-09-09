@@ -161,7 +161,7 @@ export default function Footer (){
          
         </Toolbar>
         <Grid justifyContent='space-around' container>
-          <Typography textAlign='center' textAlign={{xs:'center', sm:'left',lg:'left', md:'left'}} className='text' sx={{ color: "black" }}>
+          <Typography textAlign='center'  className='text' sx={{ color: "black" }}>
                 &copy; {new Date().getFullYear()} All rights reserved.
               </Typography>
           </Grid>
